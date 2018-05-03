@@ -9,6 +9,7 @@
     "Matt Hayes <matt@mysterycommand.com>"
   ],
   "license": "MIT",
+  "dependencies": {},
   "devDependencies": {
     "parcel-bundler": "1.7.1",
     "prettier": "1.12.1",
