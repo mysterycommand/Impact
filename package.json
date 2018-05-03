@@ -1,0 +1,12 @@
+{
+  "name": "impact",
+  "version": "1.24.0",
+  "description": "Impact is an HTML5 Game Engine.",
+  "main": "index.html",
+  "repository": "git@github.com:mysterycommand/Impact.git",
+  "contributors": [
+    "Dominic Szablewski <dominic.szablewski@gmail.com>",
+    "Matt Hayes <matt@mysterycommand.com>"
+  ],
+  "license": "MIT"
+}
