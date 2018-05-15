@@ -1,27 +1,7 @@
-const ig = {
-  system: null,
-  input: null,
-  soundManager: null,
-  music: null,
-  ready: false,
-  resources: [],
-};
+import system from './system';
+import input from './input';
+import soundManager from './sound-manager';
+import music from './music';
+import loader from './loader';
 
-export default function main(
-  canvasId,
-  gameClass,
-  fps,
-  width,
-  height,
-  scale,
-  loaderClass,
-) {
-  // ig.system = new ig.System(canvasId, fps, width, height, scale || 1);
-  // ig.input = new ig.Input();
-  // ig.soundManager = new ig.SoundManager();
-  // ig.music = new ig.Music();
-  ig.ready = true;
-
-  var loader = new loaderClass /*  || ig.Loader */(gameClass, ig.resources);
-  loader.load();
-}
+export default function impact() {}
