@@ -1,1 +1,3 @@
-export default function loader() {}
+export default function loader(main) {
+  main();
+}
