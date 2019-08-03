@@ -1,0 +1,24 @@
+{
+  "name": "impact",
+  "version": "1.0.0",
+  "description": "a port of the HTML5 game engine",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mysterycommand/Impact.git"
+  },
+  "keywords": [
+    "html5",
+    "game",
+    "engine"
+  ],
+  "author": "Matt Hayes <matt@mysterycommand.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mysterycommand/Impact/issues"
+  },
+  "homepage": "https://github.com/mysterycommand/Impact#readme"
+}
