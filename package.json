@@ -22,5 +22,9 @@
   "bugs": {
     "url": "https://github.com/mysterycommand/Impact/issues"
   },
-  "homepage": "https://github.com/mysterycommand/Impact#readme"
+  "homepage": "https://github.com/mysterycommand/Impact#readme",
+  "engines": {
+    "node": "10.16.1",
+    "npm": "6.10.2"
+  }
 }
