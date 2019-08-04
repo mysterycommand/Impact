@@ -21,7 +21,10 @@
     "desktop",
     "mobile"
   ],
-  "author": "Matt Hayes <matt@mysterycommand.com>",
+  "author": "Dominic Szablewski <dominic.szablewski@gmail.com>",
+  "contributors": [
+    "Matt Hayes <matt@mysterycommand.com>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/mysterycommand/Impact/issues"
