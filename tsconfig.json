@@ -17,7 +17,7 @@
     "target": "esnext",
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "declaration": true,
+    "declaration": false,
     "types": []
   },
   "include": [
