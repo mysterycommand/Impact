@@ -60,7 +60,8 @@ export async function useFont(path: string, options?: FontOptions) {
     x: number,
     y: number,
   ): number {
-    if (0 > charCode || charCode >= indices.length) {
+    if (charCode < 0 || indices.length <= charCode) {
+      // charCode is *outside* the bounds of this font
       return 0;
     }
 
@@ -104,6 +105,7 @@ export async function useFont(path: string, options?: FontOptions) {
     let nextX = x;
     let nextY = y;
 
+    // alignment
     if (align !== Align.Left) {
       const width = chars.reduce((acc, char) => {
         return acc + widthMap[char.charCodeAt(0) - FIRST_CHAR_CODE];

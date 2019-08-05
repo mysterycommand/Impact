@@ -9,6 +9,7 @@ export function newEl<K extends keyof HTMLElementTagNameMap>(tagName: K) {
 }
 
 export const dpr = window.devicePixelRatio;
+
 export const getPixels = (
   image: HTMLImageElement,
   x: number,
