@@ -4,7 +4,13 @@ last 2 Chrome versions
 last 2 Safari versions
 last 2 Opera versions
 last 2 iOS versions
-last 1 Android versions
+# *should* support async/await, but something (Parcel? Babel? Browserslist?)
+# doesn't think so, anyway has 0% market share, so ... ¯\_(ツ)_/¯
+#
+# @see: https://caniuse.com/#feat=async-functions
+# @see: https://browsersl.ist/?q=last+1+Android+versions
+#
+# last 1 Android versions
 last 1 ChromeAndroid versions
 last 1 FirefoxAndroid versions
 last 1 UCAndroid versions
