@@ -1,21 +1,13 @@
-const cache: { [key: string]: {} } = {};
+const cache: { [key: string]: HTMLImageElement } = {};
 
-function onLoad(event: Event) {
-  console.log({ event });
-}
-
-function onError(event: ErrorEvent) {
-  console.log({ event });
-}
-
-export function load(path: string) {
-  console.log({ path });
-  if (cache[path]) {
-    return cache[path];
+export function useImage(src: string): HTMLImageElement {
+  if (cache[src]) {
+    return cache[src];
   }
 
   const image = new Image();
-  image.addEventListener('load', onLoad);
-  image.addEventListener('error', onError);
-  image.src = path;
+  cache[src] = image;
+  image.src = src;
+
+  return image;
 }

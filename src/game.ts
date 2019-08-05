@@ -1,6 +1,13 @@
 import './game.css';
-import { load } from './lib/font';
+import { useFont, Align } from './lib/font';
 
 import path from './media/04b03.font.png';
+import { getEl } from './lib/util';
 
-load(path);
+const canvas = getEl('#canvas') as HTMLCanvasElement;
+const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+
+(async () => {
+  const print = await useFont(path);
+  print(ctx, 'It works!', 0, 0, Align.Center);
+})();

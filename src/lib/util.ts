@@ -27,3 +27,30 @@ export const getPixels = (
   ctx.drawImage(image, -x, -y);
   return ctx.getImageData(0, 0, width, height);
 };
+
+type Listener<K extends keyof HTMLElementEventMap> = (
+  event: HTMLElementEventMap[K],
+) => any;
+
+export function on<T extends EventTarget, K extends keyof HTMLElementEventMap>(
+  target: T,
+  type: K,
+  listener: Listener<K>,
+) {
+  target.addEventListener(type, listener as EventListener);
+}
+
+export function off<T extends EventTarget, K extends keyof HTMLElementEventMap>(
+  target: T,
+  type: K,
+  listener: Listener<K>,
+) {
+  target.removeEventListener(type, listener as EventListener);
+}
+
+export function once<
+  T extends EventTarget,
+  K extends keyof HTMLElementEventMap
+>(target: T, type: K, listener: Listener<K>) {
+  target.addEventListener(type, listener as EventListener, { once: true });
+}
