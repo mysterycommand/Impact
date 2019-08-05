@@ -15,8 +15,8 @@ const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 It works!
 Multiline too!
 `,
-    0,
-    0,
+    canvas.width / 2,
+    canvas.height / 2,
     Align.Center,
   );
 })();
