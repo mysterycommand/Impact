@@ -27,15 +27,17 @@ function getMetrics(image: HTMLImageElement): [number[], number[]] {
 
 const FIRST_CHAR_CODE = 32;
 const LETTER_SPACING = 1;
+const LINE_SPACING = 1;
 
 export enum Align {
-  Right,
-  Center,
   Left,
+  Center,
+  Right,
 }
 
 export async function useFont(path: string) {
   const image = useImage(path);
+  const charHeight = image.height - 2;
 
   const [widthMap, indices] = await new Promise(resolve => {
     once(image, 'load', event =>
@@ -57,7 +59,6 @@ export async function useFont(path: string) {
     const charY = 0;
 
     const charWidth = widthMap[charCode];
-    const charHeight = image.height - 2;
 
     ctx.drawImage(
       image,
@@ -81,6 +82,15 @@ export async function useFont(path: string) {
     y = 0,
     align = Align.Left,
   ) {
+    // multiline
+    if (text.includes('\n')) {
+      text.split('\n').forEach((line, i) => {
+        print(ctx, line, x, y + i * (charHeight + LINE_SPACING), align);
+      });
+
+      return;
+    }
+
     let nextX = x;
     let nextY = y;
 

@@ -9,5 +9,14 @@ const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
 
 (async () => {
   const print = await useFont(path);
-  print(ctx, 'It works!', 0, 0, Align.Center);
+  print(
+    ctx,
+    `\
+It works!
+Multiline too!
+`,
+    0,
+    0,
+    Align.Center,
+  );
 })();
