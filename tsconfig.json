@@ -15,6 +15,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "target": "esnext",
+    "noEmit": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
     "declaration": false,
