@@ -36,21 +36,29 @@ export function on<T extends EventTarget, K extends keyof HTMLElementEventMap>(
   target: T,
   type: K,
   listener: Listener<K>,
+  options?: boolean | AddEventListenerOptions,
 ) {
-  target.addEventListener(type, listener as EventListener);
+  target.addEventListener(type, listener as EventListener, options);
 }
 
 export function off<T extends EventTarget, K extends keyof HTMLElementEventMap>(
   target: T,
   type: K,
   listener: Listener<K>,
+  options?: boolean | EventListenerOptions,
 ) {
-  target.removeEventListener(type, listener as EventListener);
+  target.removeEventListener(type, listener as EventListener, options);
 }
 
 export function once<
   T extends EventTarget,
   K extends keyof HTMLElementEventMap
->(target: T, type: K, listener: Listener<K>) {
-  target.addEventListener(type, listener as EventListener, { once: true });
+>(
+  target: T,
+  type: K,
+  listener: Listener<K>,
+  options?: boolean | AddEventListenerOptions,
+) {
+  const opts = typeof options === 'boolean' ? { capture: options } : options;
+  on(target, type, listener as EventListener, { ...opts, once: true });
 }
