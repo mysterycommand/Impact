@@ -18,7 +18,7 @@ export function useSystem(
   canvasSelector: string,
   options?: Partial<SystemOptions>,
 ) {
-  const { fps, width, height, scale } = { ...options, ...defaultOptions };
+  const { fps, width, height, scale } = { ...defaultOptions, ...options };
 
   const canvas = getEl(canvasSelector) as HTMLCanvasElement;
   const realWidth = width * scale;

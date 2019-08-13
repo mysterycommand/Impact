@@ -8,10 +8,14 @@ import { useSystem } from './lib/system';
 const {
   canvas: { width, height },
   context,
-} = useSystem('#canvas');
+} = useSystem('#canvas', {
+  fps: 60,
+  scale: 2,
+});
 
 (async () => {
   const print = await useFont(path);
+
   print(
     context,
     `\
