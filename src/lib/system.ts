@@ -21,12 +21,15 @@ export function useSystem(
   const { fps, width, height, scale } = { ...defaultOptions, ...options };
 
   const canvas = getEl(canvasSelector) as HTMLCanvasElement;
+
   const realWidth = width * scale;
   const realHeight = height * scale;
   canvas.width = realWidth;
   canvas.height = realHeight;
+  canvas.style.imageRendering = 'crisp-edges';
 
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+  context.imageSmoothingEnabled = false;
 
-  return { fps, canvas, context };
+  return { fps, scale, canvas, context };
 }
