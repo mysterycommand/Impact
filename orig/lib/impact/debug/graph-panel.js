@@ -164,7 +164,7 @@ ig.DebugGraphPanel = ig.DebugPanel.extend({
 				this.ctx.fillStyle = c.color;
 				var h = c.current * this.msHeight;
 				y -= h;
-				this.ctx.fillRect(	x, y, 1, h );
+				this.ctx.fillRect( x, y, 1, h );
 				c.current = 0;
 			}
 		}
@@ -176,7 +176,7 @@ ig.DebugGraphPanel = ig.DebugPanel.extend({
 		for( var i = 0; i < this.marks.length; i++ ) {
 			var m = this.marks[i];
 			this.ctx.fillStyle = m.color;
-			this.ctx.fillRect(	x, 0, 1, this.height );
+			this.ctx.fillRect( x, 0, 1, this.height );
 			if( m.msg ) {
 				this.ctx.fillText( m.msg, x-1, this.textY );
 				this.textY = (this.textY+8)%32;
