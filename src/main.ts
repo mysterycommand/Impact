@@ -1,12 +1,12 @@
-import './main.css';
-
+import Bitmap from './lib/bitmap';
 import Font, { Align } from './lib/font';
 import Game from './lib/game';
 import { main, system } from './lib/impact';
 
+import './main.css';
+
 import fontPath from './media/04b03.font.png';
 import imgPath from './media/test.png';
-import Bitmap from './lib/bitmap';
 
 class MyGame extends Game {
   public font = new Font(fontPath);
