@@ -5,12 +5,12 @@ import Game from './lib/game';
 import { main, system } from './lib/impact';
 
 import fontPath from './media/04b03.font.png';
-import testPath from './media/test.png';
+import imgPath from './media/test.png';
 import Bitmap from './lib/bitmap';
 
 class MyGame extends Game {
   public font = new Font(fontPath);
-  public test = new Bitmap(testPath);
+  public img = new Bitmap(imgPath);
 
   public update() {
     super.update();
@@ -22,10 +22,10 @@ class MyGame extends Game {
     const hw = system.width / 2;
     const hh = system.height / 2;
 
-    const testScale = 16;
-    const testHeight = this.test.height * testScale;
+    const imgScale = 16;
+    const imgHeight = this.img.height * imgScale;
     const fontHeight = (this.font.height + this.font.lineSpacing) * 3;
-    const totalHeight = testHeight + fontHeight;
+    const totalHeight = imgHeight + fontHeight;
 
     this.font.print(
       `\
@@ -36,15 +36,15 @@ Multiline too!`,
       Align.Center,
     );
 
-    this.test.draw(
+    this.img.draw(
       0,
       0,
-      this.test.width,
-      this.test.height,
-      hw - this.test.width * (testScale / 2),
+      this.img.width,
+      this.img.height,
+      hw - this.img.width * (imgScale / 2),
       hh - totalHeight / 2 + fontHeight,
-      this.test.width * testScale,
-      this.test.height * testScale,
+      this.img.width * imgScale,
+      this.img.height * imgScale,
     );
   }
 }
