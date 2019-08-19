@@ -10,23 +10,31 @@ export function newEl<K extends keyof HTMLElementTagNameMap>(tagName: K) {
 
 export const dpr = window.devicePixelRatio;
 
-export const getPixels = (
-  image: HTMLImageElement,
+export function offscreenCanvas(
+  width: number,
+  height: number,
+): [HTMLCanvasElement, CanvasRenderingContext2D] {
+  const canvas = newEl('canvas') as HTMLCanvasElement;
+  canvas.width = width;
+  canvas.height = height;
+  canvas.style.imageRendering = 'crisp-edges';
+
+  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+  context.imageSmoothingEnabled = false;
+
+  return [canvas, context];
+}
+
+export const getImageData = (
+  image: CanvasImageSource,
   x: number,
   y: number,
   width: number,
   height: number,
 ): ImageData => {
-  const canvas = newEl('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  canvas.style.imageRendering = 'crisp-edges';
-
-  const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-  ctx.imageSmoothingEnabled = false;
-
-  ctx.drawImage(image, -x, -y);
-  return ctx.getImageData(0, 0, width, height);
+  const [, context] = offscreenCanvas(width, height);
+  context.drawImage(image, -x, -y);
+  return context.getImageData(0, 0, width, height);
 };
 
 type Listener<K extends keyof HTMLElementEventMap> = (

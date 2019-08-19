@@ -1,36 +1,7 @@
-import { useImage } from './image';
-import { getPixels, once } from './util';
-
-function getMetrics(image: HTMLImageElement): [number[], number[]] {
-  const widthMap = [];
-  const indices = [];
-  const { data } = getPixels(image, 0, image.height - 1, image.width, 1);
-
-  let currentWidth = 0;
-  for (let i = 0; i < image.width; ++i) {
-    const a = i * 4 + 3; // the index of the alpha channel
-    if (data[a] > 127) {
-      ++currentWidth;
-      continue;
-    }
-
-    widthMap.push(currentWidth);
-    indices.push(i - currentWidth);
-    currentWidth = 0;
-  }
-
-  widthMap.push(currentWidth);
-  indices.push(image.width - currentWidth);
-
-  return [widthMap, indices];
-}
+import Bitmap from './bitmap';
+import { getImageData } from './util';
 
 const FIRST_CHAR_CODE = 32;
-
-type FontOptions = {
-  letterSpacing: number;
-  lineSpacing: number;
-};
 
 export enum Align {
   Left,
@@ -38,64 +9,30 @@ export enum Align {
   Right,
 }
 
-const defaultOptions: FontOptions = {
-  letterSpacing: 1,
-  lineSpacing: 1,
-};
+export default class Font extends Bitmap {
+  public letterSpacing = 1;
+  public lineSpacing = 1;
 
-export async function useFont(path: string, options?: FontOptions) {
-  const { letterSpacing, lineSpacing } = { ...options, ...defaultOptions };
-  const image = useImage(path);
-  const charHeight = image.height - 2;
+  private widthMap: number[] = [];
+  private indices: number[] = [];
 
-  const [widthMap, indices] = await new Promise(resolve => {
-    once(image, 'load', event =>
-      resolve(getMetrics(event.target as HTMLImageElement)),
-    );
-  });
-
-  function printChar(
-    ctx: CanvasRenderingContext2D,
-    charCode: number,
-    x: number,
-    y: number,
-  ): number {
-    if (charCode < 0 || indices.length <= charCode) {
-      // charCode is *outside* the bounds of this font
-      return 0;
-    }
-
-    const charX = indices[charCode];
-    const charY = 0;
-
-    const charWidth = widthMap[charCode];
-
-    ctx.drawImage(
-      image,
-      charX,
-      charY,
-      charWidth,
-      charHeight,
-      x,
-      y,
-      charWidth,
-      charHeight,
-    );
-
-    return widthMap[charCode] + letterSpacing;
+  protected onLoad(/* event: Event */) {
+    this.getMetrics();
+    super.onLoad();
+    this.height -= 2;
   }
 
-  return function print(
-    ctx: CanvasRenderingContext2D,
-    text: string,
-    x = 0,
-    y = 0,
-    align = Align.Left,
-  ) {
+  public print(text: string, x = 0, y = 0, align = Align.Left) {
+    if (!this.imageSource) {
+      return;
+    }
+
+    const { height, letterSpacing, lineSpacing, widthMap } = this;
+
     // multiline
     if (text.includes('\n')) {
       text.split('\n').forEach((line, i) => {
-        print(ctx, line, x, y + i * (charHeight + lineSpacing), align);
+        this.print(line, x, y + i * (height + lineSpacing), align);
       });
 
       return;
@@ -115,12 +52,65 @@ export async function useFont(path: string, options?: FontOptions) {
     }
 
     chars.forEach(char => {
-      nextX += printChar(
-        ctx,
+      nextX += this.printChar(
         char.charCodeAt(0) - FIRST_CHAR_CODE,
         nextX,
         nextY,
       );
     });
-  };
+  }
+
+  private printChar(charCode: number, x: number, y: number): number {
+    if (!this.imageSource) {
+      return 0;
+    }
+
+    const { height, letterSpacing, widthMap, indices } = this;
+
+    if (charCode < 0 || indices.length <= charCode) {
+      // charCode is *outside* the bounds of this font
+      return 0;
+    }
+
+    const cx = indices[charCode];
+    const cy = 0;
+    const cw = widthMap[charCode];
+    this.draw(cx, cy, cw, height, x, y, cw, height);
+
+    return widthMap[charCode] + letterSpacing;
+  }
+
+  private getMetrics() {
+    if (!this.imageSource) {
+      return;
+    }
+
+    const {
+      /**
+       * pulling `width` and `height` off of `imageSource` here because this is
+       * run _before_ `super.onLoad` and works on the un`resize`d `imageSource`
+       */
+      imageSource: { width, height },
+      widthMap,
+      indices,
+    } = this;
+    const { data } = getImageData(this.imageSource, 0, height - 1, width, 1);
+
+    let currentWidth = 0;
+    for (let i = 0; i < width; ++i) {
+      const a = i * 4 + 3; // the index of the alpha channel
+
+      if (data[a] > 127) {
+        ++currentWidth;
+        continue;
+      }
+
+      widthMap.push(currentWidth);
+      indices.push(i - currentWidth);
+      currentWidth = 0;
+    }
+
+    widthMap.push(currentWidth);
+    indices.push(width - currentWidth);
+  }
 }

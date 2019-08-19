@@ -1,35 +1,30 @@
 import { getEl } from './util';
 
-type SystemOptions = {
-  fps: number;
-  width: number;
-  height: number;
-  scale: number;
-};
+export default class System {
+  private canvas: HTMLCanvasElement;
+  public context: CanvasRenderingContext2D;
 
-const defaultOptions: SystemOptions = {
-  fps: 30,
-  width: 320,
-  height: 240,
-  scale: 1,
-};
+  private realWidth: number = this.width * this.scale;
+  private realHeight: number = this.height * this.scale;
 
-export function useSystem(
-  canvasSelector: string,
-  options?: Partial<SystemOptions>,
-) {
-  const { fps, width, height, scale } = { ...defaultOptions, ...options };
+  constructor(
+    readonly canvasId: string,
+    readonly fps: number,
+    readonly width: number,
+    readonly height: number,
+    readonly scale: number,
+  ) {
+    this.canvas = getEl(canvasId) as HTMLCanvasElement;
+    this.canvas.width = this.realWidth;
+    this.canvas.height = this.realHeight;
+    this.canvas.style.imageRendering = 'crisp-edges';
 
-  const canvas = getEl(canvasSelector) as HTMLCanvasElement;
+    this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+    this.context.imageSmoothingEnabled = false;
+  }
 
-  const realWidth = width * scale;
-  const realHeight = height * scale;
-  canvas.width = realWidth;
-  canvas.height = realHeight;
-  canvas.style.imageRendering = 'crisp-edges';
-
-  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  context.imageSmoothingEnabled = false;
-
-  return { fps, scale, canvas, context };
+  public clear(color = '#000') {
+    this.context.fillStyle = color;
+    this.context.fillRect(0, 0, this.realWidth, this.realHeight);
+  }
 }
