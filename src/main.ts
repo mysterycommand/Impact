@@ -22,29 +22,29 @@ class MyGame extends Game {
     const hw = system.width / 2;
     const hh = system.height / 2;
 
-    const imgScale = 16;
-    const imgHeight = this.img.height * imgScale;
-    const fontHeight = (this.font.height + this.font.lineSpacing) * 3;
+    const { height: ih } = this.img;
+    const scale = 16;
+    const imgHeight = ih * scale;
+
+    const { height: fh, lineSpacing } = this.font;
+    const text = `\
+It works!
+Multiline too!`;
+    const fontLines = text.split('\n').length;
+    const fontHeight = (fh + lineSpacing) * (fontLines + 1);
+
     const totalHeight = imgHeight + fontHeight;
 
-    this.font.print(
-      `\
-It works!
-Multiline too!`,
-      hw,
-      hh - totalHeight / 2,
-      Align.Center,
-    );
-
+    this.font.print(text, hw, hh - totalHeight / 2, Align.Center);
     this.img.draw(
       0,
       0,
       this.img.width,
       this.img.height,
-      hw - this.img.width * (imgScale / 2),
+      hw - this.img.width * (scale / 2),
       hh - totalHeight / 2 + fontHeight,
-      this.img.width * imgScale,
-      this.img.height * imgScale,
+      this.img.width * scale,
+      this.img.height * scale,
     );
   }
 }
