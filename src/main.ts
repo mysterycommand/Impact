@@ -7,6 +7,7 @@ import './main.css';
 
 import fontPath from './media/04b03.font.png';
 import imgPath from './media/test.png';
+import { sT } from './lib/util';
 
 class MyGame extends Game {
   public font = new Font(fontPath);
@@ -50,12 +51,3 @@ Multiline too!`;
 }
 
 main('#canvas', MyGame, 60, 320, 240, 2);
-
-/**
- * testing
- */
-(async () => {
-  const game = new MyGame();
-  await new Promise(resolve => setTimeout(resolve, 16));
-  game.draw();
-})();

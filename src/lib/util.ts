@@ -8,7 +8,14 @@ export function newEl<K extends keyof HTMLElementTagNameMap>(tagName: K) {
   return document.createElement(tagName);
 }
 
-export const dpr = window.devicePixelRatio;
+export const {
+  devicePixelRatio: dpr,
+  requestAnimationFrame: rAF,
+  cancelAnimationFrame: cAF,
+  setTimeout: sT,
+  setInterval: sI,
+  clearInterval: cI,
+} = window;
 
 export function offscreenCanvas(
   width: number,

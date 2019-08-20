@@ -3,8 +3,10 @@ import Input from './input';
 import Loader from './loader';
 import System from './system';
 
+export type LoadCallback = (path: string, success: boolean) => void;
 export type Resource = {
   path: string;
+  load: (callback?: LoadCallback) => void;
 };
 
 export const resources: Resource[] = [];

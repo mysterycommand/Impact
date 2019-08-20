@@ -1,4 +1,4 @@
-import { ready, resources, system } from './impact';
+import { ready, resources, system, LoadCallback } from './impact';
 import { getImageData, offscreenCanvas } from './util';
 
 const { floor, round } = Math;
@@ -33,27 +33,7 @@ export default class Bitmap {
   public height = 0;
 
   private isLoaded = false;
-  private callback?: (path: string, success: boolean) => void;
-
-  protected onLoad(/* event: Event */) {
-    if (!this.imageSource) {
-      return;
-    }
-
-    // TODO: @mysterycommand - this seems redundant, create a getter to reach
-    // into `this.data` or just expect consumers to do it
-    this.width = this.imageSource.width;
-    this.height = this.imageSource.height;
-    this.isLoaded = true;
-
-    system.scale != 1 && this.resize(system.scale);
-    this.callback && this.callback(this.path, true);
-  }
-
-  protected onError(/* event: Event */) {
-    this.isLoaded = false;
-    this.callback && this.callback(this.path, false);
-  }
+  private callback?: LoadCallback;
 
   public constructor(readonly path: string) {
     if (Bitmap.cache.has(path)) {
@@ -63,13 +43,13 @@ export default class Bitmap {
     this.load();
   }
 
-  public load(callback?: (path: string, success: boolean) => void) {
+  public load(callback?: LoadCallback) {
     if (this.isLoaded) {
       callback && callback(this.path, true);
       return;
     }
 
-    if (ready) {
+    if (!this.isLoaded && ready) {
       this.callback = callback;
 
       this.imageSource = new Image();
@@ -111,6 +91,26 @@ export default class Bitmap {
     );
 
     Bitmap.drawCount++;
+  }
+
+  protected onLoad(/* event: Event */) {
+    if (!this.imageSource) {
+      return;
+    }
+
+    // TODO: @mysterycommand - this seems redundant, create a getter to reach
+    // into `this.data` or just expect consumers to do it
+    this.width = this.imageSource.width;
+    this.height = this.imageSource.height;
+    this.isLoaded = true;
+
+    system.scale != 1 && this.resize(system.scale);
+    this.callback && this.callback(this.path, true);
+  }
+
+  protected onError(/* event: Event */) {
+    this.isLoaded = false;
+    this.callback && this.callback(this.path, false);
   }
 
   private resize(scale: number) {
