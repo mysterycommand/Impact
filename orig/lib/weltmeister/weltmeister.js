@@ -18,6 +18,7 @@ ig.module(
 .defines(function(){ "use strict";
 
 wm.Weltmeister = ig.Class.extend({	
+	mode: null,
 	MODE: {
 		DRAW: 1,
 		TILESELECT: 2,
@@ -36,7 +37,7 @@ wm.Weltmeister = ig.Class.extend({
 	mouseLast: {x: -1, y: -1},
 	waitForModeChange: false,
 	
-	tilsetSelectDialog: null,
+	tilesetSelectDialog: null,
 	levelSavePathDialog: null,
 	labelsStep: 32,
 	
@@ -45,6 +46,7 @@ wm.Weltmeister = ig.Class.extend({
 	loadDialog: null,
 	saveDialog: null,
 	loseChangesDialog: null,
+	deleteLayerDialog: null,
 	fileName: 'untitled.js',
 	filePath: wm.config.project.levelPath + 'untitled.js',
 	modified: false,
@@ -136,7 +138,7 @@ wm.Weltmeister = ig.Class.extend({
 		if( wm.config.loadLastLevel ) {
 			var path = $.cookie('wmLastLevel');
 			if( path ) {
-				this.load( null, path )
+				this.load( null, path );
 			}
 		}
 		
