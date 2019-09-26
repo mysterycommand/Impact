@@ -1,10 +1,10 @@
-export function getEl(selector: string) {
+export function query(selector: string) {
   return document.querySelector(selector);
 }
-export function getEls(selector: string) {
+export function queryAll(selector: string) {
   return document.querySelectorAll(selector);
 }
-export function newEl<K extends keyof HTMLElementTagNameMap>(tagName: K) {
+export function createEl<K extends keyof HTMLElementTagNameMap>(tagName: K) {
   return document.createElement(tagName);
 }
 
@@ -21,12 +21,12 @@ export function offscreenCanvas(
   width: number,
   height: number,
 ): [HTMLCanvasElement, CanvasRenderingContext2D] {
-  const canvas = newEl('canvas') as HTMLCanvasElement;
+  const canvas = createEl('canvas');
   canvas.width = width;
   canvas.height = height;
   canvas.style.imageRendering = 'crisp-edges';
 
-  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+  const context = canvas.getContext('2d')!;
   context.imageSmoothingEnabled = false;
 
   return [canvas, context];

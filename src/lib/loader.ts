@@ -4,7 +4,7 @@ import { rAF, cAF } from './util';
 
 export default class Loader {
   private isDone = false;
-  private frameId = -1;
+  private frameId = 0;
 
   private unloadedPaths: string[] = [];
   private callback = (path: string, success: boolean) => {
@@ -78,7 +78,7 @@ export default class Loader {
 
     this.isDone = true;
     cAF(this.frameId);
-    this.frameId = -1;
+    this.frameId = 0;
 
     system.setGame(this.GameClass);
   }

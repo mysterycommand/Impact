@@ -2,6 +2,8 @@ import Game from './game';
 import Input from './input';
 import Loader from './loader';
 import System from './system';
+import Sound from './sound';
+import Music from './music';
 
 export type LoadCallback = (path: string, success: boolean) => void;
 export type Resource = {
@@ -15,6 +17,9 @@ export let system: System;
 export let input: Input;
 export let ready = false;
 
+export let sound: Sound;
+export let music: Music;
+
 export function main(
   canvasId: string,
   GameClass: typeof Game,
@@ -26,12 +31,10 @@ export function main(
 ) {
   system = new System(canvasId, fps, width, height, scale);
   input = new Input();
-
-  // ig.soundManager = new ig.SoundManager();
-  // ig.music = new ig.Music();
+  sound = new Sound();
+  music = new Music();
 
   ready = true;
-
   const loader = new LoaderClass(GameClass, resources);
   loader.load();
 }

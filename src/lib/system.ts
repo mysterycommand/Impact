@@ -1,4 +1,4 @@
-import { getEl, cAF, rAF } from './util';
+import { query, cAF, rAF } from './util';
 import Game from './game';
 
 export default class System {
@@ -11,7 +11,7 @@ export default class System {
   private canvas: HTMLCanvasElement;
   private realWidth: number = this.width * this.scale;
   private realHeight: number = this.height * this.scale;
-  private frameId = -1;
+  private frameId = 0;
   private run = (time: DOMHighResTimeStamp) => {
     if (!this.game) {
       this.isRunning && this.stop();
@@ -29,12 +29,12 @@ export default class System {
     readonly height: number,
     readonly scale: number,
   ) {
-    this.canvas = getEl(canvasId) as HTMLCanvasElement;
+    this.canvas = query(canvasId) as HTMLCanvasElement;
     this.canvas.width = this.realWidth;
     this.canvas.height = this.realHeight;
     this.canvas.style.imageRendering = 'crisp-edges';
 
-    this.context = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+    this.context = this.canvas.getContext('2d')!;
     this.context.imageSmoothingEnabled = false;
   }
 
@@ -55,6 +55,6 @@ export default class System {
 
   private stop() {
     cAF(this.frameId);
-    this.frameId = -1;
+    this.frameId = 0;
   }
 }
