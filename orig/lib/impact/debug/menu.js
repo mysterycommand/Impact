@@ -28,6 +28,7 @@ ig.Debug = ig.Class.extend({
 	numbers: {},
 	container: null,
 	panelMenu: null,
+	numberContainer: null,
 	activePanel: null,
 	
 	debugTime: 0,
@@ -69,7 +70,7 @@ ig.Debug = ig.Class.extend({
 	},
 	
 	
-	addNumber: function( name, width ) {
+	addNumber: function( name ) {
 		var number = ig.$new('span');		
 		this.numberContainer.appendChild( number );
 		this.numberContainer.appendChild( document.createTextNode(name) );
@@ -78,9 +79,9 @@ ig.Debug = ig.Class.extend({
 	},
 	
 	
-	showNumber: function( name, number, width ) {
+	showNumber: function( name, number ) {
 		if( !this.numbers[name] ) {
-			this.addNumber( name, width );
+			this.addNumber( name );
 		}
 		this.numbers[name].textContent = number;
 	},

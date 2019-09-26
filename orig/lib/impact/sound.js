@@ -35,7 +35,6 @@ ig.SoundManager = ig.Class.extend({
 			this.audioContext = new AudioContext();
 			this.boundWebAudioUnlock = this.unlockWebAudio.bind(this);
 			ig.system.canvas.addEventListener('touchstart', this.boundWebAudioUnlock, false);
-
 		}
 	},
 	
@@ -470,7 +469,7 @@ ig.Sound.WebAudioSource = ig.Class.extend({
 		// later when it has finished playing.
 		var that = this;
 		this.sources.push(source);
-		source.onended = function(){ that.sources.erase(source); }
+		source.onended = function(){ that.sources.erase(source); };
 
 		source.start(0);
 	},
