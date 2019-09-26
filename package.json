@@ -31,8 +31,8 @@
   },
   "homepage": "https://github.com/mysterycommand/Impact#readme",
   "engines": {
-    "node": "10.16.1",
-    "npm": "6.10.2"
+    "node": "10.16.3",
+    "npm": "6.11.3"
   },
   "dependencies": {},
   "devDependencies": {
