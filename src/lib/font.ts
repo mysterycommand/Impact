@@ -1,6 +1,8 @@
 import Bitmap from './bitmap';
 import { getImageData } from './util';
 
+const { min } = Math;
+
 const FIRST_CHAR_CODE = 32;
 
 export enum Align {
@@ -40,23 +42,17 @@ export default class Font extends Bitmap {
 
     const chars = text.split('');
     let nextX = x;
-    let nextY = y;
 
     // alignment
     if (align !== Align.Left) {
       const width = chars.reduce((acc, char) => {
         return acc + widthMap[char.charCodeAt(0) - FIRST_CHAR_CODE];
-      }, Math.max(0, letterSpacing * (text.length - 1)));
-
+      }, min(0, letterSpacing * text.length));
       nextX -= align === Align.Center ? width / 2 : width;
     }
 
     chars.forEach(char => {
-      nextX += this.printChar(
-        char.charCodeAt(0) - FIRST_CHAR_CODE,
-        nextX,
-        nextY,
-      );
+      nextX += this.printChar(char.charCodeAt(0) - FIRST_CHAR_CODE, nextX, y);
     });
   }
 
@@ -105,9 +101,11 @@ export default class Font extends Bitmap {
         continue;
       }
 
-      widthMap.push(currentWidth);
-      indices.push(i - currentWidth);
-      currentWidth = 0;
+      if (data[a] < 128 && currentWidth) {
+        widthMap.push(currentWidth);
+        indices.push(i - currentWidth);
+        currentWidth = 0;
+      }
     }
 
     widthMap.push(currentWidth);

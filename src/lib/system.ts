@@ -9,8 +9,8 @@ export default class System {
   }
 
   private canvas: HTMLCanvasElement;
-  private realWidth: number = this.width * this.scale;
-  private realHeight: number = this.height * this.scale;
+  private realWidth = this.width * this.scale;
+  private realHeight = this.height * this.scale;
   private frameId = 0;
   private run = (time: DOMHighResTimeStamp) => {
     if (!this.game) {
@@ -25,17 +25,28 @@ export default class System {
   constructor(
     readonly canvasId: string,
     readonly fps: number,
-    readonly width: number,
-    readonly height: number,
-    readonly scale: number,
+    public width: number,
+    public height: number,
+    public scale: number,
   ) {
     this.canvas = query(canvasId) as HTMLCanvasElement;
-    this.canvas.width = this.realWidth;
-    this.canvas.height = this.realHeight;
+    this.resize(width, height, scale);
     this.canvas.style.imageRendering = 'crisp-edges';
 
     this.context = this.canvas.getContext('2d')!;
     this.context.imageSmoothingEnabled = false;
+  }
+
+  public resize(width: number, height: number, scale = this.scale) {
+    this.width = width;
+    this.height = height;
+    this.scale = scale;
+
+    this.realWidth = this.width * this.scale;
+    this.realHeight = this.height * this.scale;
+
+    this.canvas.width = this.realWidth;
+    this.canvas.height = this.realHeight;
   }
 
   public clear(color = '#000') {
