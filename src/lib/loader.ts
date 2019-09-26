@@ -1,6 +1,6 @@
 import Game from './game';
 import { Resource, system } from './impact';
-import { rAF, cAF, sT } from './util';
+import { rAF, cAF } from './util';
 
 export default class Loader {
   private isDone = false;
