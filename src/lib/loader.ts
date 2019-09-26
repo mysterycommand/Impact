@@ -14,10 +14,42 @@ export default class Loader {
     } else {
       throw new Error(`Failed to load resource: ${path}`);
     }
+  };
 
-    if (this.unloadedPaths.length === 0) {
-      sT(() => this.end(), 200);
+  private drawStatus = 0;
+  private draw = () => {
+    const {
+      unloadedPaths: { length: ul },
+      resources: { length: rl },
+    } = this;
+    const { scale: s, width, height, context } = system;
+
+    const w = width * 0.6;
+    const h = height * 0.1;
+    const x = width * 0.5 - w / 2;
+    const y = height * 0.5 - h / 2;
+
+    const status = 1 - ul / rl;
+    this.drawStatus += (status - this.drawStatus) / 5;
+
+    if (status === 1 && this.drawStatus > 0.99) {
+      this.end();
+      return;
     }
+
+    this.frameId = rAF(this.draw);
+
+    context.fillStyle = '#000';
+    context.fillRect(0, 0, width, height);
+
+    context.fillStyle = '#fff';
+    context.fillRect(x * s, y * s, w * s, h * s);
+
+    context.fillStyle = '#000';
+    context.fillRect(x * s + s, y * s + s, w * s - s - s, h * s - s - s);
+
+    context.fillStyle = '#fff';
+    context.fillRect(x * s, y * s, w * s * this.drawStatus, h * s);
   };
 
   constructor(public GameClass: typeof Game, public resources: Resource[]) {
@@ -36,7 +68,7 @@ export default class Loader {
       this.loadResource(resource);
     });
 
-    this.frameId = rAF(this.draw.bind(this));
+    this.frameId = rAF(this.draw);
   }
 
   private end() {
@@ -53,38 +85,5 @@ export default class Loader {
 
   private loadResource(resource: Resource) {
     resource.load(this.callback);
-  }
-
-  private draw() {
-    const {
-      unloadedPaths: { length: ul },
-      resources: { length: rl },
-    } = this;
-    const { scale, width, height, context } = system;
-
-    const w = width * 0.6;
-    const h = height * 0.1;
-    const x = width * 0.5 - w / 2;
-    const y = height * 0.5 - h / 2;
-
-    const status = 1 - ul / rl;
-
-    context.fillStyle = '#000';
-    context.fillRect(0, 0, width, height);
-
-    context.fillStyle = '#fff';
-    context.fillRect(x * scale, y * scale, w * scale, h * scale);
-
-    context.fillStyle = '#000';
-    context.fillRect(
-      x * scale + scale,
-      y * scale + scale,
-      w * scale - scale - scale,
-      h * scale - scale - scale,
-    );
-
-    console.log(status);
-    context.fillStyle = '#fff';
-    context.fillRect(x * scale, y * scale, w * scale * status, h * scale);
   }
 }
