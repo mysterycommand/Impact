@@ -7,11 +7,14 @@ import './main.css';
 
 import fontPath from './media/04b03.font.png';
 import imgPath from './media/test.png';
-import { sT } from './lib/util';
+// import { sT } from './lib/util';
+
+const fontResource = new Font(fontPath);
+const imgResource = new Bitmap(imgPath);
 
 class MyGame extends Game {
-  public font = new Font(fontPath);
-  public img = new Bitmap(imgPath);
+  public font = fontResource;
+  public img = imgResource;
 
   public update() {
     super.update();
