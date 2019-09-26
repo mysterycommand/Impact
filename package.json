@@ -6,7 +6,7 @@
     "clean": "rm -rf .cache/ coverage/ dist/",
     "reset": "npm run clean node_modules/ && npm install",
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html --public-url /Impact --experimental-scope-hoisting",
+    "build": "parcel build src/index.html --public-url /Impact",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
