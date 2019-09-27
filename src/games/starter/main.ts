@@ -43,7 +43,7 @@ Multiline too!`;
       hw - this.img.width * (scale / 2),
       hh - totalHeight / 2 + fontHeight,
       this.img.width * scale,
-      this.img.height * scale,
+      imgHeight,
     );
   }
 }

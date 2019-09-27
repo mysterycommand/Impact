@@ -1,8 +1,6 @@
 import Bitmap from './bitmap';
 import { getImageData } from './util';
 
-const { min } = Math;
-
 const FIRST_CHAR_CODE = 32;
 
 export enum Align {
@@ -47,7 +45,7 @@ export default class Font extends Bitmap {
     if (align !== Align.Left) {
       const width = chars.reduce((acc, char) => {
         return acc + widthMap[char.charCodeAt(0) - FIRST_CHAR_CODE];
-      }, min(0, letterSpacing * text.length));
+      }, letterSpacing * text.length);
       nextX -= align === Align.Center ? width / 2 : width;
     }
 
