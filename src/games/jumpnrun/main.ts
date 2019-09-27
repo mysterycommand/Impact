@@ -1,7 +1,8 @@
 import Bitmap from '../../lib/bitmap';
 import Font, { Align } from '../../lib/font';
 import Game from '../../lib/game';
-import { main, system } from '../../lib/impact';
+import { input, main, system } from '../../lib/impact';
+import KeyCode from '../../lib/key-code';
 import { query, on } from '../../lib/util';
 
 import '../../main.css';
@@ -13,14 +14,14 @@ import heartEmptyPath from './media/heart-empty.png';
 import coinIconPath from './media/coin.png';
 import titlePath from './media/title.png';
 
+import { config } from './levels/title';
+
 // resources (to load)
 const fontResource = new Font(fontPath);
 const heartFullResource = new Bitmap(heartFullPath);
 const heartEmptyResource = new Bitmap(heartEmptyPath);
 const coinIconResource = new Bitmap(coinIconPath);
 const titleResource = new Bitmap(titlePath);
-
-const { floor, random } = Math;
 
 class MyGame extends Game {
   protected clearColor = '#d0f4f7';
@@ -35,7 +36,7 @@ class MyGame extends Game {
     super();
 
     this.font.letterSpacing = -2;
-    // this.loadLevel(LevelGrasslands);
+    // this.loadLevel(Grasslands);
   }
 
   public update() {
@@ -59,11 +60,17 @@ class MyTitle extends Game {
     super();
 
     this.font.letterSpacing = -2;
-    // this.loadLevel(LevelGrasslands);
+
+    input.bind(KeyCode.ArrowLeft, 'left');
+    input.bind(KeyCode.ArrowRight, 'right');
+    input.bind(KeyCode.KeyX, 'jump');
+    input.bind(KeyCode.KeyC, 'shoot');
+
+    this.loadLevel(config);
   }
 
   public update() {
-    if (floor(random()) > 0) {
+    if (input.pressed('jump') || input.pressed('shoot')) {
       system.setGame(MyGame);
       return;
     }

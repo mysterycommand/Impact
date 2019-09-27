@@ -13,7 +13,7 @@ export default class Bitmap {
    * are of type `SVGAnimatedLength` and I don't want to deal with converting
    * those to numbers for what I think is probably a small use case
    *
-   * @see https://developer.mozilla.org/en-US/docs/Web/API/CanvasImageSource
+   * @see: https://developer.mozilla.org/en-US/docs/Web/API/CanvasImageSource
    *
    * @type {(HTMLImageElement
    *     | HTMLVideoElement
