@@ -98,9 +98,10 @@ export default class Game {
             }
 
             const cell = table[col][row];
-            cell.forEach(e => {
-              if (!checked[e.id]) {
-                checked[e.id] = true;
+            cell.forEach(other => {
+              if (!checked[other.id] && entity.isTouching(other)) {
+                checked[other.id] = true;
+                // checkPair(entity, other);
               }
             });
             cell.push(entity);
