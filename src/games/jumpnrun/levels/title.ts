@@ -1,15 +1,19 @@
 import Bitmap from '../../../lib/bitmap';
+import { LevelConfig } from '../../../types';
+
+import Glerp from '../entities/glerp';
+import Player from '../entities/player';
 
 import tilePath from '../media/tiles-70.png';
 new Bitmap(tilePath); // registers/loads the resource
 
-export const config = {
+export const config: LevelConfig = {
   entities: [
-    { type: 'EntityBlob', x: 392, y: 316 },
-    { type: 'EntityBlob', x: 700, y: 732 },
-    { type: 'EntityBlob', x: 80, y: 668 },
-    { type: 'EntityBlob', x: 332, y: 812 },
-    { type: 'EntityPlayer', x: 541, y: 542 },
+    { EntityClass: Glerp, x: 392, y: 316 },
+    { EntityClass: Glerp, x: 700, y: 732 },
+    { EntityClass: Glerp, x: 80, y: 668 },
+    { EntityClass: Glerp, x: 332, y: 812 },
+    { EntityClass: Player, x: 541, y: 542 },
   ],
   layers: [
     {
