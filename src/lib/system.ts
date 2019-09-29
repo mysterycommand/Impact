@@ -5,12 +5,13 @@ export default class System {
   public context: CanvasRenderingContext2D;
   public game?: Game;
   public get isRunning() {
-    return this.frameId !== -1;
+    return this.frameId !== 0;
   }
 
   private canvas: HTMLCanvasElement;
   private realWidth = this.width * this.scale;
   private realHeight = this.height * this.scale;
+
   private frameId = 0;
   private run = (time: DOMHighResTimeStamp) => {
     if (!this.game) {

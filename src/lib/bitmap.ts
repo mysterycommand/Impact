@@ -98,7 +98,7 @@ export default class Bitmap {
       return;
     }
 
-    // TODO: @mysterycommand - this seems redundant, create a getter to reach
+    // TODO: this seems redundant, create a getter to reach
     // into `this.data` or just expect consumers to do it
     this.width = this.imageSource.width;
     this.height = this.imageSource.height;

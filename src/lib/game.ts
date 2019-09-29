@@ -1,5 +1,5 @@
 import { system } from './impact';
-import Entity from './entity';
+import Entity, { checkPair } from './entity';
 
 import { LevelConfig } from '../types';
 
@@ -51,12 +51,24 @@ export default class Game {
   }
 
   public update() {
+    // TODO: load new level
+
     this.updateEntities();
     this.checkEntities();
+
+    // TODO: remove killed entities
+    // TODO: re-sort entities
+    // TODO: update background animations
   }
 
   public draw() {
     system.clear(this.clearColor);
+
+    // TODO: figure out what `game._rscreen` is and why it exists
+
+    // TODO: draw background maps
+    this.drawEntities();
+    // TODO: draw foreground maps
   }
 
   protected updateEntities() {
@@ -101,12 +113,24 @@ export default class Game {
             cell.forEach(other => {
               if (!checked[other.id] && entity.isTouching(other)) {
                 checked[other.id] = true;
-                // checkPair(entity, other);
+                checkPair(entity, other);
               }
             });
             cell.push(entity);
           }
         }
       });
+  }
+
+  protected drawEntities() {
+    this.entities.forEach(entity => {
+      if (!entity.isActive) {
+        throw new Error(
+          `Trying to draw inactive entity: ${entity.id} - ${entity.toString()}`,
+        );
+      }
+
+      entity.draw();
+    });
   }
 }
