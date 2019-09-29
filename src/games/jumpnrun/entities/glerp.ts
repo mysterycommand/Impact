@@ -6,5 +6,9 @@ export default class Glerp extends Entity {
 
   public type = Type.Enemy;
   public checksAgainst = Type.Friend;
-  public collides = Collides.Never;
+  public collides = Collides.Passive;
+
+  constructor(x: number, y: number) {
+    super(x, y);
+  }
 }
