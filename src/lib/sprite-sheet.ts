@@ -3,11 +3,7 @@ import Bitmap from './bitmap';
 export default class SpriteSheet {
   readonly bitmap?: Bitmap;
 
-  constructor(
-    readonly path: string,
-    readonly spriteWidth = 8,
-    readonly spriteHeight = 8,
-  ) {
+  constructor(readonly path: string, readonly width = 8, readonly height = 8) {
     this.bitmap = new Bitmap(path);
   }
 }
