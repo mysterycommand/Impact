@@ -3,7 +3,7 @@ import { system } from './impact';
 
 export default class SpriteSheetAnimation {
   constructor(
-    readonly sheet: SpriteSheet,
+    readonly spriteSheet: SpriteSheet,
     readonly spf: number,
     readonly frames: number[],
     readonly stop = false,
@@ -13,21 +13,21 @@ export default class SpriteSheetAnimation {
     if (
       x > system.width ||
       y > system.height ||
-      x + this.sheet.width < 0 ||
-      y + this.sheet.height < 0
+      x + this.spriteSheet.width < 0 ||
+      y + this.spriteSheet.height < 0
     ) {
       return;
     }
 
-    this.sheet.bitmap!.draw(
+    this.spriteSheet.bitmap.draw(
       0,
       0,
-      this.sheet.width,
-      this.sheet.height,
+      this.spriteSheet.width,
+      this.spriteSheet.height,
       x,
       y,
-      this.sheet.width,
-      this.sheet.height,
+      this.spriteSheet.width,
+      this.spriteSheet.height,
     );
   }
 }
