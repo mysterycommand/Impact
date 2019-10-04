@@ -1,5 +1,7 @@
 import Bitmap from './bitmap';
 
+// TODO: there is no reason for this to be a class, interface + pojo, or roll it
+// into the SpriteSheetAnimation class
 export default class SpriteSheet {
   readonly bitmap = new Bitmap(this.path);
 
