@@ -14,6 +14,15 @@ export default class SpriteSheetAnimation {
       return;
     }
 
-    this.sheet.bitmap!.draw();
+    this.sheet.bitmap!.draw(
+      0,
+      0,
+      this.sheet.width,
+      this.sheet.height,
+      x,
+      y,
+      this.sheet.width,
+      this.sheet.height,
+    );
   }
 }
