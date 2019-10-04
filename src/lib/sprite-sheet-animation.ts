@@ -2,7 +2,12 @@ import SpriteSheet from './sprite-sheet';
 import { system } from './impact';
 
 export default class SpriteSheetAnimation {
-  constructor(readonly sheet: SpriteSheet) {}
+  constructor(
+    readonly sheet: SpriteSheet,
+    readonly spf: number,
+    readonly frames: number[],
+    readonly stop = false,
+  ) {}
 
   public draw(x: number, y: number) {
     if (

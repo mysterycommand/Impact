@@ -1,3 +1,6 @@
+import SpriteSheet from './sprite-sheet';
+import SpriteSheetAnimation from './sprite-sheet-animation';
+
 let nextId = 0;
 
 export const enum Type {
@@ -39,6 +42,12 @@ export default class Entity {
 
   public vel = { x: 0, y: 0 };
   public bounciness = 0;
+
+  public spriteSheet?: SpriteSheet;
+  public currAnim?: SpriteSheetAnimation;
+  public anims: {
+    [name: string]: SpriteSheetAnimation;
+  } = {};
 
   public get currTop() {
     return this.currPos.y - this.offset.y;
@@ -93,7 +102,11 @@ export default class Entity {
     // this.currPos.y += this.vel.y;
   }
 
-  public draw() {}
+  public draw() {
+    if (this.currAnim) {
+      this.currAnim.draw(this.currLeft, this.currTop);
+    }
+  }
 
   public check(other: Entity) {}
   public collideWith(other: Entity, axis: Axis) {}
@@ -105,6 +118,23 @@ export default class Entity {
       this.currBottom <= other.currTop ||
       this.currLeft >= other.currRight
     );
+  }
+
+  public addAnim(name: string, spf: number, frames: number[], stop = false) {
+    if (!this.spriteSheet) {
+      throw new Error(
+        `No sprite sheet for animation "${name}" in ${this.toString()}`,
+      );
+    }
+
+    const anim = new SpriteSheetAnimation(this.spriteSheet, spf, frames, stop);
+    this.anims[name] = anim;
+
+    if (!this.currAnim) {
+      this.currAnim = anim;
+    }
+
+    return anim;
   }
 }
 
