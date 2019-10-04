@@ -32,7 +32,7 @@ export default class Bitmap {
   public width = 0;
   public height = 0;
 
-  private isLoaded = false;
+  public isLoaded = false;
   private callback?: LoadCallback;
 
   public constructor(readonly path: string) {
