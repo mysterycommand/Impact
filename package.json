@@ -36,13 +36,13 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "7.7.7",
-    "@babel/preset-env": "7.7.7",
-    "@babel/preset-typescript": "7.7.7",
-    "core-js": "3.6.1",
+    "@babel/core": "7.8.0",
+    "@babel/preset-env": "7.8.0",
+    "@babel/preset-typescript": "7.8.0",
+    "core-js": "3.6.3",
     "parcel-bundler": "1.12.4",
     "prettier": "1.19.1",
-    "serve": "11.2.0",
+    "serve": "11.3.0",
     "typescript": "3.7.4"
   }
 }
