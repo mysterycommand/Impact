@@ -31,18 +31,18 @@
   },
   "homepage": "https://github.com/mysterycommand/Impact#readme",
   "engines": {
-    "node": "12.13.0",
-    "npm": "6.13.0"
+    "node": "12.14.1",
+    "yarn": "1.21.1"
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "7.8.0",
-    "@babel/preset-env": "7.8.0",
-    "@babel/preset-typescript": "7.8.0",
-    "core-js": "3.6.3",
+    "@babel/core": "7.8.3",
+    "@babel/preset-env": "7.8.3",
+    "@babel/preset-typescript": "7.8.3",
+    "core-js": "3.6.4",
     "parcel-bundler": "1.12.4",
     "prettier": "1.19.1",
     "serve": "11.3.0",
-    "typescript": "3.7.4"
+    "typescript": "3.7.5"
   }
 }
