@@ -1,5 +1,6 @@
-import { query, cAF, rAF } from './util';
 import Game from './game';
+import Timer from './timer';
+import { query, cAF, rAF } from './util';
 
 export default class System {
   public context: CanvasRenderingContext2D;
@@ -18,6 +19,8 @@ export default class System {
       this.isRunning && this.stop();
       return;
     }
+
+    Timer.step(time);
 
     this.frameId = rAF(this.run);
     this.game.run();
