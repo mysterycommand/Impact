@@ -1,7 +1,10 @@
-import { system } from './impact';
-import Entity, { checkPair } from './entity';
-
 import { LevelConfig } from '../types';
+
+import Entity, { checkPair } from './entity';
+import { system } from './impact';
+import CollisionMap from './maps/collision-map';
+import SceneryMap from './maps/scenery-map';
+import Bitmap from './bitmap';
 
 const { floor } = Math;
 
@@ -13,6 +16,9 @@ export default class Game {
   protected namedEntites: { [name: string]: Entity } = {};
   protected cellSize = 64;
 
+  protected backgroundMaps: SceneryMap[] = [];
+  protected collisionMap: CollisionMap = CollisionMap.none;
+
   protected loadLevel({ entities, layers }: LevelConfig) {
     this.screen = { x: 0, y: 0 };
     this.entities = [];
@@ -23,7 +29,26 @@ export default class Game {
     });
     this.sortEntities();
 
-    // do map stuff here
+    const cm = layers.find(({ name }) => name === 'collision');
+    if (cm !== undefined) {
+      const { data, tileSize } = cm;
+      this.collisionMap = new CollisionMap(data, tileSize);
+    }
+
+    this.backgroundMaps = layers
+      .filter(({ name }) => name !== 'collision')
+      .map(({ data, tileSize, tileSetName, name, repeat }) => {
+        const backgroundMap = new SceneryMap(
+          data,
+          tileSize,
+          new Bitmap(tileSetName),
+        );
+
+        backgroundMap.name = name;
+        backgroundMap.shouldRepeat = repeat;
+
+        return backgroundMap;
+      });
 
     this.entities.forEach(entity => {
       entity.ready();

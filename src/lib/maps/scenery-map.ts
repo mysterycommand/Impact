@@ -6,7 +6,7 @@ export default class SceneryMap extends BaseMap {
   readonly enabled = true;
 
   private scroll = { x: 0, y: 0 };
-  private shouldRepeat = false;
+  public shouldRepeat = false;
 
   constructor(
     readonly data: number[][] = [[]],

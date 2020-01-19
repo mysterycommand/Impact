@@ -1,7 +1,7 @@
 const { floor } = Math;
 
 export default class BaseMap {
-  readonly name = '';
+  public name = '';
 
   constructor(
     readonly data: number[][] = [[]],
@@ -16,7 +16,7 @@ export default class BaseMap {
     const tx = floor(x / this.tileSize);
     const ty = floor(y / this.tileSize);
 
-    if (0 <= tx && tx < this.width && (0 <= ty && ty < this.height)) {
+    if (0 <= tx && tx < this.width && 0 <= ty && ty < this.height) {
       return this.data[ty][tx];
     }
 
@@ -27,7 +27,7 @@ export default class BaseMap {
     const tx = floor(x / this.tileSize);
     const ty = floor(y / this.tileSize);
 
-    if (0 <= tx && tx < this.width && (0 <= ty && ty < this.height)) {
+    if (0 <= tx && tx < this.width && 0 <= ty && ty < this.height) {
       this.data[ty][tx] = tile;
     }
   }
