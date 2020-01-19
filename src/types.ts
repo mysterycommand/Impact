@@ -12,11 +12,11 @@ export type LayerConfig = {
   height: number;
   linkWithCollision: boolean;
   visible: boolean;
-  tilesetName: string;
+  tileSetName: string;
   repeat: boolean;
   preRender: boolean;
   distance: string | number;
-  tilesize: number;
+  tileSize: number;
   foreground: boolean;
   data: number[][];
 };
