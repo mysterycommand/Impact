@@ -20,4 +20,8 @@ export default class Glerp extends Entity {
     this.addAnim('crawl', 0.2, [0, 1]);
     this.addAnim('dead', 1, [2]);
   }
+
+  update() {
+    super.update();
+  }
 }

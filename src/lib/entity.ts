@@ -100,6 +100,8 @@ export default class Entity {
 
     // this.currPos.x += this.vel.x;
     // this.currPos.y += this.vel.y;
+
+    this.currAnim?.update();
   }
 
   public draw() {

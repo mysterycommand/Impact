@@ -7,14 +7,14 @@ import { query, on } from '../../lib/util';
 
 import '../../main.css';
 
+import { config } from './levels/title';
+
 // media paths
 import fontPath from './media/fredoka-one.font.png';
 import heartFullPath from './media/heart-full.png';
 import heartEmptyPath from './media/heart-empty.png';
 import coinIconPath from './media/coin.png';
 import titlePath from './media/title.png';
-
-import { config } from './levels/title';
 
 // resources (to load)
 const fontResource = new Font(fontPath);
