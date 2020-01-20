@@ -56,6 +56,8 @@ class MyTitle extends Game {
 
   public title = titleResource;
 
+  private maxY = 0;
+
   constructor() {
     super();
 
@@ -67,6 +69,8 @@ class MyTitle extends Game {
     input.bind(KeyCode.KeyC, 'shoot');
 
     this.loadLevel(config);
+
+    this.maxY = this.sceneryMaps[0].pixelHeight - system.height;
   }
 
   public update() {
@@ -76,6 +80,12 @@ class MyTitle extends Game {
     }
 
     super.update();
+
+    const move = this.maxY - this.screen.y;
+    if (move > 5) {
+      this.screen.y += move * system.tick;
+    }
+    this.screen.x = (this.sceneryMaps[0].pixelWidth - system.width) / 2;
   }
 
   public draw() {
