@@ -98,8 +98,8 @@ export default class Entity {
     this.prevPos.x = this.currPos.x;
     this.prevPos.y = this.currPos.y;
 
-    // this.currPos.x += this.vel.x;
-    // this.currPos.y += this.vel.y;
+    // TODO: accumulate forces: gravity, acceleration, friction/drag, max-velocity
+    // TODO: handle movement & collision
 
     this.currAnim?.update();
   }
