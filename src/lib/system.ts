@@ -3,13 +3,23 @@ import Timer from './timer';
 import { query, cAF, rAF } from './util';
 
 export default class System {
-  public context: CanvasRenderingContext2D;
+  public get context() {
+    return this.canvasContext;
+  }
+
   public game?: Game;
   public get isRunning() {
     return this.frameId !== 0;
   }
 
+  public get tick() {
+    return this.clock.tick();
+  }
+
+  private clock = new Timer();
   private canvas: HTMLCanvasElement;
+  private canvasContext: CanvasRenderingContext2D;
+
   private realWidth = this.width * this.scale;
   private realHeight = this.height * this.scale;
 
@@ -37,7 +47,7 @@ export default class System {
     this.resize(width, height, scale);
     this.canvas.style.imageRendering = 'crisp-edges';
 
-    this.context = this.canvas.getContext('2d')!;
+    this.canvasContext = this.canvas.getContext('2d')!;
     this.context.imageSmoothingEnabled = false;
   }
 
