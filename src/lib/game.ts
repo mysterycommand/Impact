@@ -4,7 +4,6 @@ import Entity, { checkPair } from './entity';
 import { system } from './impact';
 import CollisionMap from './maps/collision-map';
 import SceneryMap from './maps/scenery-map';
-import Bitmap from './bitmap';
 import SpriteSheet from './sprite-sheet';
 
 const { floor } = Math;
