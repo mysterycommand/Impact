@@ -57,19 +57,7 @@ export default class SpriteSheetAnimation {
     }
 
     if (this.angle === 0) {
-      const tw = floor(this.spriteSheet.width * scale);
-      const th = floor(this.spriteSheet.height * scale);
-
-      this.spriteSheet.bitmap.draw(
-        (floor(this.sprite * tw) % this.spriteSheet.bitmap.width) * scale,
-        floor((this.sprite * tw) / this.spriteSheet.bitmap.width) * th * scale,
-        tw,
-        th,
-        x,
-        y,
-        tw,
-        th,
-      );
+      this.spriteSheet.draw(this.sprite, x, y);
     } else {
       // TODO: implement rotation!
     }

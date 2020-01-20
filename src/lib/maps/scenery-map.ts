@@ -1,5 +1,6 @@
-import Bitmap from '../bitmap';
 import { system } from '../impact';
+import SpriteSheet from '../sprite-sheet';
+
 import BaseMap from './base-map';
 
 export default class SceneryMap extends BaseMap {
@@ -7,17 +8,24 @@ export default class SceneryMap extends BaseMap {
 
   private scroll = { x: 0, y: 0 };
   public shouldRepeat = false;
+  public isForeground = false;
+  public distance = 1;
 
   constructor(
     readonly data: number[][] = [[]],
     readonly tileSize = 8,
-    private tileSet: Bitmap,
+    private tileSet: SpriteSheet,
   ) {
     super(data, tileSize);
   }
 
+  public setScreenPos(x: number, y: number) {
+    this.scroll.x = x / this.distance;
+    this.scroll.y = y / this.distance;
+  }
+
   public draw() {
-    if (!this.tileSet.isLoaded || !this.enabled) {
+    if (!this.tileSet.bitmap.isLoaded || !this.enabled) {
       return;
     }
 
@@ -72,7 +80,8 @@ export default class SceneryMap extends BaseMap {
           tileX = ((tileX % this.width) + this.width) % this.width;
         }
 
-        if (this.data[tileY][tileX]) {
+        const tile = this.data[tileY]?.[tileX];
+        if (tile) {
           // tile = this.data[tileY][tileX];
 
           // if (this.anims[tile - 1]) {
@@ -81,16 +90,7 @@ export default class SceneryMap extends BaseMap {
           //   return;
           // }
 
-          this.tileSet.draw(
-            0,
-            0,
-            this.tileSize,
-            this.tileSize,
-            pxX,
-            pxY,
-            this.tileSize,
-            this.tileSize,
-          );
+          this.tileSet.draw(tile - 1, pxX, pxY);
         }
       }
     }
