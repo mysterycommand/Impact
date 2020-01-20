@@ -6,8 +6,8 @@ export default class BaseMap {
   constructor(
     readonly data: number[][] = [[]],
     readonly tileSize = 8,
-    readonly width = data.length,
-    readonly height = data[0].length,
+    readonly width = data[0].length,
+    readonly height = data.length,
     readonly pixelWidth = width * tileSize,
     readonly pixelHeight = height * tileSize,
   ) {}
