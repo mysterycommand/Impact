@@ -5,6 +5,7 @@ import { system } from './impact';
 import CollisionMap from './maps/collision-map';
 import SceneryMap from './maps/scenery-map';
 import Bitmap from './bitmap';
+import SpriteSheet from './sprite-sheet';
 
 const { floor } = Math;
 
@@ -16,7 +17,7 @@ export default class Game {
   protected namedEntites: { [name: string]: Entity } = {};
   protected cellSize = 64;
 
-  protected backgroundMaps: SceneryMap[] = [];
+  protected sceneryMaps: SceneryMap[] = [];
   protected collisionMap: CollisionMap = CollisionMap.none;
 
   protected loadLevel({ entities, layers }: LevelConfig) {
@@ -35,20 +36,32 @@ export default class Game {
       this.collisionMap = new CollisionMap(data, tileSize);
     }
 
-    this.backgroundMaps = layers
+    this.sceneryMaps = layers
       .filter(({ name }) => name !== 'collision')
-      .map(({ data, tileSize, tileSetName, name, repeat }) => {
-        const backgroundMap = new SceneryMap(
+      .map(
+        ({
           data,
           tileSize,
-          new Bitmap(tileSetName),
-        );
+          tileSetName,
+          name,
+          repeat,
+          foreground,
+          distance,
+        }) => {
+          const map = new SceneryMap(
+            data,
+            tileSize,
+            new SpriteSheet(tileSetName, tileSize, tileSize),
+          );
 
-        backgroundMap.name = name;
-        backgroundMap.shouldRepeat = repeat;
+          map.name = name;
+          map.shouldRepeat = repeat;
+          map.isForeground = foreground;
+          map.distance = distance;
 
-        return backgroundMap;
-      });
+          return map;
+        },
+      );
 
     this.entities.forEach(entity => {
       entity.ready();
@@ -91,7 +104,15 @@ export default class Game {
 
     // TODO: figure out what `game._rscreen` is and why it exists
 
-    // TODO: draw background maps
+    this.sceneryMaps.forEach(map => {
+      if (map.isForeground) {
+        return;
+      }
+
+      map.setScreenPos(this.screen.x, this.screen.y);
+      map.draw();
+    });
+
     this.drawEntities();
     // TODO: draw foreground maps
   }
