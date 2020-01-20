@@ -25,7 +25,7 @@ export const config: LevelConfig = {
       tileSetName: tilePath,
       repeat: true,
       preRender: false,
-      distance: '2',
+      distance: 2,
       tileSize: 70,
       foreground: false,
       data: [
@@ -54,7 +54,7 @@ export const config: LevelConfig = {
       tileSetName: tilePath,
       repeat: false,
       preRender: false,
-      distance: '1',
+      distance: 1,
       tileSize: 70,
       foreground: false,
       data: [
