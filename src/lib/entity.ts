@@ -105,9 +105,7 @@ export default class Entity {
   }
 
   public draw() {
-    if (this.currAnim) {
-      this.currAnim.draw(this.currLeft, this.currTop);
-    }
+    this.currAnim?.draw(this.currLeft, this.currTop);
   }
 
   public check(other: Entity) {}
