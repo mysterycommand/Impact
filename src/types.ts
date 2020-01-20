@@ -15,7 +15,7 @@ export type LayerConfig = {
   tileSetName: string;
   repeat: boolean;
   preRender: boolean;
-  distance: string | number;
+  distance: number;
   tileSize: number;
   foreground: boolean;
   data: number[][];
