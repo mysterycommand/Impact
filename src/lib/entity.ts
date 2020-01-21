@@ -1,3 +1,6 @@
+import { system } from './impact';
+import { TraceResult } from './maps/collision-map';
+import { abs, atan2, min, max, toRadians, isBetween } from './math';
 import SpriteSheet from './sprite-sheet';
 import SpriteSheetAnimation from './sprite-sheet-animation';
 
@@ -23,6 +26,8 @@ export const enum Axis {
   Y = 'y',
 }
 
+let once = true;
+
 export default class Entity {
   readonly id = nextId++;
   readonly name?: string;
@@ -41,7 +46,18 @@ export default class Entity {
   private prevPos = { x: 0, y: 0 };
 
   public vel = { x: 0, y: 0 };
+  public maxVel = { x: 0, y: 0 };
+
+  public acc = { x: 0, y: 0 };
+  public friction = { x: 0, y: 0 };
+
+  public gravityFactor = 1;
+
+  public isStanding = false;
+  public standingSlope = { min: toRadians(44), max: toRadians(136) };
+
   public bounciness = 0;
+  public minBounce = 40;
 
   public spriteSheet?: SpriteSheet;
   public currAnim?: SpriteSheetAnimation;
@@ -50,7 +66,7 @@ export default class Entity {
   } = {};
 
   public get currTop() {
-    return this.currPos.y - this.offset.y;
+    return this.currPos.y - this.offset.y - (system?.game?.screen.y || 0);
   }
 
   public get currRight() {
@@ -62,7 +78,7 @@ export default class Entity {
   }
 
   public get currLeft() {
-    return this.currPos.x - this.offset.x;
+    return this.currPos.x - this.offset.x - (system?.game?.screen.x || 0);
   }
 
   public get prevTop() {
@@ -98,8 +114,42 @@ export default class Entity {
     this.prevPos.x = this.currPos.x;
     this.prevPos.y = this.currPos.y;
 
-    // TODO: accumulate forces: gravity, acceleration, friction/drag, max-velocity
-    // TODO: handle movement & collision
+    const { game, tick } = system;
+    if (!game) {
+      throw new Error('Tried to update without a game!');
+    }
+
+    this.vel.y += (game.gravity || 0) * tick * this.gravityFactor;
+    this.vel.x = this.getVel(
+      this.vel.x,
+      this.acc.x,
+      this.friction.x,
+      this.maxVel.x,
+    );
+    this.vel.y = this.getVel(
+      this.vel.y,
+      this.acc.y,
+      this.friction.y,
+      this.maxVel.y,
+    );
+
+    // movement & collision
+    const mx = this.vel.x * tick;
+    const my = this.vel.y * tick;
+    const result = game.collisionMap.trace(
+      this.currPos.x,
+      this.currPos.y,
+      mx,
+      my,
+      this.size.x,
+      this.size.y,
+    );
+    this.handleTrace(result);
+
+    if (once) {
+      once = false;
+      console.log(JSON.stringify(result, null, 2));
+    }
 
     this.currAnim?.update();
   }
@@ -135,6 +185,83 @@ export default class Entity {
     }
 
     return anim;
+  }
+
+  protected handleTrace({
+    collision: { x, y, slope },
+    pos: { x: px, y: py },
+  }: TraceResult) {
+    this.isStanding = false;
+
+    if (x) {
+      if (this.bounciness > 0 && abs(this.vel.x) > this.minBounce) {
+        this.vel.x *= -this.bounciness;
+      } else {
+        this.vel.x = 0;
+      }
+    }
+
+    if (y) {
+      if (this.bounciness > 0 && abs(this.vel.y) > this.minBounce) {
+        this.vel.y *= -this.bounciness;
+      } else {
+        this.isStanding = this.vel.y > 0;
+        this.vel.y = 0;
+      }
+    }
+
+    if (slope !== false) {
+      const { x, y, nx, ny } = slope;
+
+      if (this.bounciness > 0) {
+        const proj = this.vel.x * nx + this.vel.y * ny;
+
+        this.vel.x = (this.vel.x - nx * proj * 2) * this.bounciness;
+        this.vel.y = (this.vel.y - ny * proj * 2) * this.bounciness;
+      } else {
+        const lsq = x * x + y * y;
+        const dot = (this.vel.x * x + this.vel.y * y) / lsq;
+
+        this.vel.x = x * dot;
+        this.vel.y = y * dot;
+
+        const angle = atan2(x, y);
+        this.isStanding = isBetween(
+          this.standingSlope.min,
+          this.standingSlope.max,
+          angle,
+          false,
+          false,
+        );
+      }
+    }
+
+    this.currPos.x = px;
+    this.currPos.y = py;
+  }
+
+  private getVel(v: number, a: number, f: number, m: number) {
+    const { tick } = system;
+
+    if (a !== 0) {
+      min(max(-m, v + a * tick), m);
+    }
+
+    if (f !== 0) {
+      const d = f * tick;
+
+      if (v - d > 0) {
+        return v - d;
+      }
+
+      if (v + d < 0) {
+        return v + d;
+      }
+
+      return 0;
+    }
+
+    return min(max(-m, v), m);
   }
 }
 

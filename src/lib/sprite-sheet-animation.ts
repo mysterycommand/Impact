@@ -6,6 +6,7 @@ import Timer from './timer';
 const { floor } = Math;
 
 export default class SpriteSheetAnimation {
+  public flip = { x: false, y: false };
   // private pivot = {
   //   x: this.spriteSheet.width / 2,
   //   y: this.spriteSheet.height / 2,

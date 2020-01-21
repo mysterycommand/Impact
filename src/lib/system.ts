@@ -12,9 +12,7 @@ export default class System {
     return this.frameId !== 0;
   }
 
-  public get tick() {
-    return this.clock.tick();
-  }
+  public tick = 0;
 
   private clock = new Timer();
   private canvas: HTMLCanvasElement;
@@ -31,6 +29,7 @@ export default class System {
     }
 
     Timer.step(time);
+    this.tick = this.clock.tick();
 
     this.frameId = rAF(this.run);
     this.game.run();

@@ -1,55 +1,29 @@
-import BaseMap from './base-map';
+import {
+  abs,
+  ceil,
+  floor,
+  max,
+  min,
+  sqrt,
+  isBetween,
+  isOutside,
+} from '../math';
 
-const { abs, ceil, floor, max, min, sqrt } = Math;
+import BaseMap from './base-map';
 
 type TileDef = {
   [key: number]: [number, number, number, number, boolean];
 };
 
-type TraceResult = {
+export type TraceResult = {
   collision: {
     x: boolean;
     y: boolean;
-    slope: { x: number; y: number; nx: number; ny: number } | boolean;
+    slope: { x: number; y: number; nx: number; ny: number } | false;
   };
   tile: { x: number; y: number };
   pos: { x: number; y: number };
 };
-
-// TODO: should this go into '../util'?
-function isBetween(
-  lowerBound: number,
-  upperBound: number,
-  value: number,
-  lowerBoundInclusive = true,
-  upperBoundInclusive = false,
-) {
-  if (upperBound < lowerBound) {
-    [lowerBound, upperBound] = [upperBound, lowerBound];
-  }
-
-  return (
-    (lowerBoundInclusive ? lowerBound <= value : lowerBound < value) &&
-    (upperBoundInclusive ? value <= upperBound : value < upperBound)
-  );
-}
-
-function isOutside(
-  lowerBound: number,
-  upperBound: number,
-  value: number,
-  lowerBoundInclusive = false,
-  upperBoundInclusive = true,
-) {
-  if (upperBound < lowerBound) {
-    [lowerBound, upperBound] = [upperBound, lowerBound];
-  }
-
-  return (
-    (lowerBoundInclusive ? lowerBound <= value : lowerBound < value) &&
-    (upperBoundInclusive ? value <= upperBound : value < upperBound)
-  );
-}
 
 export default class CollisionMap extends BaseMap {
   // n.b. this *must* appear _before_ `none` below because the inherited
@@ -97,6 +71,7 @@ export default class CollisionMap extends BaseMap {
     h: number,
   ): TraceResult {
     const steps = ceil((max(abs(vx), abs(vy)) + 0.1) / this.tileSize);
+
     return new Array(steps).fill(true).reduce(
       (result, _, i) => {
         const sx = vx / steps;

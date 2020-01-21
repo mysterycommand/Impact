@@ -9,15 +9,25 @@ import SpriteSheet from './sprite-sheet';
 const { floor } = Math;
 
 export default class Game {
-  protected clearColor = '#000';
+  public readonly gravity: number = 0;
 
-  protected screen = { x: 0, y: 0 };
+  protected clearColor = '#000';
+  public screen = { x: 0, y: 0 };
+
   protected entities: Entity[] = [];
+
   protected namedEntites: { [name: string]: Entity } = {};
   protected cellSize = 64;
 
-  protected sceneryMaps: SceneryMap[] = [];
-  protected collisionMap: CollisionMap = CollisionMap.none;
+  public get sceneryMaps(): Readonly<SceneryMap[]> {
+    return this.sMaps;
+  }
+  protected sMaps: SceneryMap[] = [];
+
+  public get collisionMap(): Readonly<CollisionMap> {
+    return this.cMap;
+  }
+  protected cMap: CollisionMap = CollisionMap.none;
 
   protected loadLevel({ entities, layers }: LevelConfig) {
     this.screen = { x: 0, y: 0 };
@@ -29,13 +39,13 @@ export default class Game {
     });
     this.sortEntities();
 
-    const cm = layers.find(({ name }) => name === 'collision');
-    if (cm !== undefined) {
-      const { data, tileSize } = cm;
-      this.collisionMap = new CollisionMap(data, tileSize);
+    const collisionLayer = layers.find(({ name }) => name === 'collision');
+    if (collisionLayer !== undefined) {
+      const { data, tileSize } = collisionLayer;
+      this.cMap = new CollisionMap(data, tileSize);
     }
 
-    this.sceneryMaps = layers
+    this.sMaps = layers
       .filter(({ name }) => name !== 'collision')
       .map(
         ({
@@ -103,7 +113,7 @@ export default class Game {
 
     // TODO: figure out what `game._rscreen` is and why it exists
 
-    this.sceneryMaps.forEach(map => {
+    this.sMaps.forEach(map => {
       if (map.isForeground) {
         return;
       }

@@ -50,6 +50,8 @@ class MyGame extends Game {
 }
 
 class MyTitle extends Game {
+  public readonly gravity: number = 800;
+
   protected clearColor = '#d0f4f7';
 
   public font = fontResource;
