@@ -150,6 +150,9 @@ export default class Entity {
   public draw() {
     this.currAnim?.draw(this.currLeft, this.currTop);
 
+    /**
+     * DEBUG DRAW!
+     */
     // system.context.strokeStyle = 'red';
     // system.context.lineWidth = 1.0;
     // system.context.strokeRect(

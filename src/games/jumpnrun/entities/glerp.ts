@@ -1,7 +1,7 @@
 import Entity, { Type, Collides } from '../../../lib/entity';
-import SpriteSheet from '../../../lib/sprite-sheet';
 import { system } from '../../../lib/impact';
 import { TraceResult } from '../../../lib/maps/collision-map';
+import SpriteSheet from '../../../lib/sprite-sheet';
 
 import blobPath from '../media/blob.png';
 const blobResource = new SpriteSheet(blobPath, 64, 28);
