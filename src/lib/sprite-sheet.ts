@@ -10,21 +10,39 @@ export default class SpriteSheet {
 
   constructor(readonly path: string, readonly width = 8, readonly height = 8) {}
 
-  public draw(spriteIndex: number, targetX: number, targetY: number) {
-    const { scale } = system;
+  public draw(
+    spriteIndex: number,
+    targetX: number,
+    targetY: number,
+    flipX = false,
+    flipY = false,
+  ) {
+    const { context, scale } = system;
 
     const w = floor(this.width * scale);
     const h = floor(this.height * scale);
+
+    const scaleX = flipX ? -1 : 1;
+    const scaleY = flipY ? -1 : 1;
+
+    if (flipX || flipY) {
+      context.save();
+      context.scale(scaleX, scaleY);
+    }
 
     this.bitmap.draw(
       (floor(spriteIndex * w) % this.bitmap.width) * scale,
       floor((spriteIndex * w) / this.bitmap.width) * h * scale,
       w,
       h,
-      targetX,
-      targetY,
+      targetX * scaleX - (flipX ? w : 0),
+      targetY * scaleY - (flipY ? h : 0),
       w,
       h,
     );
+
+    if (flipX || flipY) {
+      context.restore();
+    }
   }
 }

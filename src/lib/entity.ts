@@ -1,6 +1,6 @@
 import { system } from './impact';
 import { TraceResult } from './maps/collision-map';
-import { abs, atan2, min, max, toRadians, isBetween } from './math';
+import { abs, atan2, min, max, round, toRadians, isBetween } from './math';
 import SpriteSheet from './sprite-sheet';
 import SpriteSheetAnimation from './sprite-sheet-animation';
 
@@ -26,8 +26,6 @@ export const enum Axis {
   Y = 'y',
 }
 
-let once = true;
-
 export default class Entity {
   readonly id = nextId++;
   readonly name?: string;
@@ -46,7 +44,7 @@ export default class Entity {
   private prevPos = { x: 0, y: 0 };
 
   public vel = { x: 0, y: 0 };
-  public maxVel = { x: 0, y: 0 };
+  public maxVel = { x: 100, y: 100 };
 
   public acc = { x: 0, y: 0 };
   public friction = { x: 0, y: 0 };
@@ -146,16 +144,22 @@ export default class Entity {
     );
     this.handleTrace(result);
 
-    if (once) {
-      once = false;
-      console.log(JSON.stringify(result, null, 2));
-    }
-
     this.currAnim?.update();
   }
 
   public draw() {
     this.currAnim?.draw(this.currLeft, this.currTop);
+
+    // system.context.strokeStyle = 'red';
+    // system.context.lineWidth = 1.0;
+    // system.context.strokeRect(
+    //   (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
+    //     0.5,
+    //   (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
+    //     0.5,
+    //   this.size.x * system.scale,
+    //   this.size.y * system.scale,
+    // );
   }
 
   public check(other: Entity) {}

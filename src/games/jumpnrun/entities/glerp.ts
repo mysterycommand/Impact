@@ -9,6 +9,7 @@ const blobResource = new SpriteSheet(blobPath, 64, 28);
 export default class Glerp extends Entity {
   public size = { x: 40, y: 28 };
   public offset = { x: 24, y: 0 };
+  public friction = { x: 150, y: 0 };
 
   public type = Type.Enemy;
   public checksAgainst = Type.Friend;
@@ -33,7 +34,7 @@ export default class Glerp extends Entity {
       game?.collisionMap.getTile(
         this.currPos.x + (this.flip ? 4 : this.size.x - 4),
         this.currPos.y + this.size.y + 1,
-      )
+      ) === 0
     ) {
       this.toggleFlip();
     }

@@ -51,14 +51,14 @@ export default class SpriteSheetAnimation {
       return;
     }
 
-    const { context, scale } = system;
+    const { context } = system;
 
     if (this.alpha !== 1) {
       context.globalAlpha = this.alpha;
     }
 
     if (this.angle === 0) {
-      this.spriteSheet.draw(this.sprite, x, y);
+      this.spriteSheet.draw(this.sprite, x, y, this.flip.x, this.flip.y);
     } else {
       // TODO: implement rotation!
     }

@@ -70,36 +70,19 @@ export default class CollisionMap extends BaseMap {
     w: number,
     h: number,
   ): TraceResult {
-    const steps = ceil((max(abs(vx), abs(vy)) + 0.1) / this.tileSize);
+    const result: TraceResult = {
+      collision: { x: false, y: false, slope: false },
+      pos: { x, y },
+      tile: { x: 0, y: 0 },
+    };
 
-    return new Array(steps).fill(true).reduce(
-      (result, _, i) => {
-        const sx = vx / steps;
-        const sy = vy / steps;
+    const steps = ceil(max(abs(vx), abs(vy) + 0.1) / this.tileSize);
+    if (steps > 1) {
+    } else {
+      this.traceStep(result, x, y, vx, vy, w, h, vx, vy, 0);
+    }
 
-        if (sx === 0 && sy === 0) {
-          return result;
-        }
-
-        this.traceStep(
-          result,
-          result.pos.x,
-          result.pos.y,
-          sx,
-          sy,
-          w,
-          h,
-          vx,
-          vy,
-          i,
-        );
-      },
-      {
-        collision: { x: false, y: false, slope: false },
-        tile: { x: 0, y: 0 },
-        pos: { x, y },
-      },
-    );
+    return result;
   }
 
   private traceStep(
@@ -140,7 +123,7 @@ export default class CollisionMap extends BaseMap {
             if (
               t &&
               isBetween(1, this.lastSlope, t, false, true) &&
-              this.checkTileDef(result, t, tileX, tileY, x, y, w, h, vx, vy)
+              this.checkTileDef(result, t, prevTileX, tileY, x, y, w, h, vx, vy)
             ) {
               break;
             }
@@ -196,28 +179,28 @@ export default class CollisionMap extends BaseMap {
             if (
               t &&
               isBetween(1, this.lastSlope, t, false, true) &&
-              this.checkTileDef(result, t, tileX, tileY, x, y, w, h, vx, vy)
+              this.checkTileDef(result, t, tileX, prevTileY, x, y, w, h, vx, vy)
             ) {
               break;
             }
+          }
 
-            t = this.data[tileY]?.[tileX];
-            if (
-              (t && t === 1) ||
-              t > this.lastSlope ||
-              (t > 1 &&
-                this.checkTileDef(result, t, tileX, tileY, x, y, w, h, vx, vy))
-            ) {
-              if (t > 1 && t < this.lastSlope && result.collision.slope) {
-                break;
-              }
-
-              // full tile collision
-              result.collision.y = true;
-              result.tile.y = t;
-              result.pos.y = tileY * this.tileSize - pxOffsetY + tileOffsetY;
+          t = this.data[tileY]?.[tileX];
+          if (
+            (t && t === 1) ||
+            t > this.lastSlope ||
+            (t > 1 &&
+              this.checkTileDef(result, t, tileX, tileY, x, y, w, h, vx, vy))
+          ) {
+            if (t > 1 && t <= this.lastSlope && result.collision.slope) {
               break;
             }
+
+            // full tile collision
+            result.collision.y = true;
+            result.tile.y = t;
+            result.pos.y = tileY * this.tileSize - pxOffsetY + tileOffsetY;
+            break;
           }
         }
       }
