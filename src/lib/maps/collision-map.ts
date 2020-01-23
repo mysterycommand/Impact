@@ -27,7 +27,7 @@ export type TraceResult = {
 
 export default class CollisionMap extends BaseMap {
   // n.b. this *must* appear _before_ `none` below because the inherited
-  // `constructor needs to access this value ... truly wild stuff JavaScript!
+  // `constructor` needs to access this value ... truly wild stuff JavaScript!
   static readonly defaultTileDef: TileDef = {
     // TODO: support the full `defaultTileDef`
     // @see: ../../../orig/lib/impact/collision-map.js#L234
