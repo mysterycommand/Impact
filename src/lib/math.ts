@@ -50,7 +50,7 @@ export function isOutside(
   }
 
   return (
-    (lowerBoundInclusive ? lowerBound <= value : lowerBound < value) &&
-    (upperBoundInclusive ? value <= upperBound : value < upperBound)
+    (lowerBoundInclusive ? value <= lowerBound : value < lowerBound) &&
+    (upperBoundInclusive ? upperBound <= value : upperBound < value)
   );
 }
