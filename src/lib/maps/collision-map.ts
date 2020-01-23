@@ -79,6 +79,9 @@ export default class CollisionMap extends BaseMap {
     const steps = ceil(max(abs(vx), abs(vy) + 0.1) / this.tileSize);
 
     if (steps > 1) {
+      throw new Error('Time to find out if multi-step trace works!');
+
+      /*
       let sx = vx / steps;
       let sy = vy / steps;
 
@@ -100,6 +103,7 @@ export default class CollisionMap extends BaseMap {
 
         return result.collision.slope !== false;
       });
+      */
     } else {
       this.traceStep(result, x, y, vx, vy, w, h, vx, vy, 0);
     }
