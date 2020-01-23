@@ -77,7 +77,29 @@ export default class CollisionMap extends BaseMap {
     };
 
     const steps = ceil(max(abs(vx), abs(vy) + 0.1) / this.tileSize);
+
     if (steps > 1) {
+      let sx = vx / steps;
+      let sy = vy / steps;
+
+      new Array(steps).fill(true).some((_, i) => {
+        this.traceStep(result, x, y, sx, sy, w, h, vx, vy, i);
+
+        x = result.pos.x;
+        y = result.pos.y;
+
+        if (result.collision.x) {
+          sx = 0;
+          vx = 0;
+        }
+
+        if (result.collision.y) {
+          sy = 0;
+          vy = 0;
+        }
+
+        return result.collision.slope !== false;
+      });
     } else {
       this.traceStep(result, x, y, vx, vy, w, h, vx, vy, 0);
     }
