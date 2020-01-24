@@ -11,7 +11,7 @@ export type LayerConfig = {
   width: number;
   height: number;
   linkWithCollision: boolean;
-  visible: boolean;
+  visible: boolean | number;
   tileSetName: string;
   repeat: boolean;
   preRender: boolean;

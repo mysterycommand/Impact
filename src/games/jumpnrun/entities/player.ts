@@ -2,6 +2,7 @@ import Entity from '../../../lib/entity';
 import SpriteSheet from '../../../lib/sprite-sheet';
 
 import playerPath from '../media/player.png';
+import { input } from '../../../lib/impact';
 const playerResource = new SpriteSheet(playerPath, 75, 100);
 
 export default class Player extends Entity {
@@ -10,9 +11,12 @@ export default class Player extends Entity {
   public friction = { x: 800, y: 0 };
   public maxVel = { x: 400, y: 800 };
 
-  private flip = false;
-
   public spriteSheet = playerResource;
+
+  private flip = false;
+  private accelGround = 1_200;
+  private accelAir = this.accelGround / 2;
+  private velJump = 500;
 
   constructor(x: number, y: number) {
     super(x, y);
@@ -22,18 +26,55 @@ export default class Player extends Entity {
     this.addAnim('jump', 1, [13]);
     this.addAnim('fall', 0.4, [13, 12], true);
     this.addAnim('pain', 0.3, [6], true);
-
-    console.log(this);
   }
 
   public update() {
-    // TODO: handle user input
+    // left & right
+    const accel = this.isStanding ? this.accelGround : this.accelAir;
 
-    // TODO: handle animation/state stuff
-    this.currAnim = this.anims.idle;
+    if (input.state('left')) {
+      this.acc.x = -accel;
+      this.flip = true;
+    } else if (input.state('right')) {
+      this.acc.x = accel;
+      this.flip = false;
+    } else {
+      this.acc.x = 0;
+    }
 
+    // jump
+    if (this.isStanding && input.pressed('jump')) {
+      this.vel.y = -this.velJump;
+      // this.sfxJump.play();
+    }
+
+    // shoot
+    if (input.pressed('shoot')) {
+      // game.spawnEntity(
+      //   Fireball,
+      //   this.currPos.x,
+      //   this.currPos.y + 40,
+      //   this.flip,
+      // );
+    }
+
+    // TODO: pain & death
+    if (this.vel.y < 0) {
+      this.currAnim = this.anims.jump;
+    } else if (this.vel.y > 0) {
+      if (this.currAnim !== this.anims.fall) {
+        this.currAnim = this.anims.fall;
+      }
+    } else if ((this.vel.x += 0)) {
+      this.currAnim = this.anims.run;
+    } else {
+      this.currAnim = this.anims.idle;
+    }
+
+    // flip
     this.currAnim.flip.x = this.flip;
 
+    // move
     super.update();
   }
 }

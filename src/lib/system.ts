@@ -1,6 +1,7 @@
 import Game from './game';
 import Timer from './timer';
 import { query, cAF, rAF } from './util';
+import { input } from './impact';
 
 export default class System {
   public get context() {
@@ -33,6 +34,7 @@ export default class System {
 
     this.frameId = rAF(this.run);
     this.game.run();
+    input.clearPressed();
   };
 
   constructor(

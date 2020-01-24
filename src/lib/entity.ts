@@ -1,6 +1,14 @@
 import { system } from './impact';
 import { TraceResult } from './maps/collision-map';
-import { abs, atan2, min, max, round, toRadians, isBetween } from './math';
+import {
+  abs,
+  atan2,
+  min,
+  max,
+  /* round, */
+  toRadians,
+  isBetween,
+} from './math';
 import SpriteSheet from './sprite-sheet';
 import SpriteSheetAnimation from './sprite-sheet-animation';
 
@@ -156,9 +164,9 @@ export default class Entity {
     // system.context.strokeStyle = 'red';
     // system.context.lineWidth = 1.0;
     // system.context.strokeRect(
-    //   (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
+    //   (/* round( */this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
     //     0.5,
-    //   (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
+    //   (/* round( */this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
     //     0.5,
     //   this.size.x * system.scale,
     //   this.size.y * system.scale,
@@ -251,7 +259,7 @@ export default class Entity {
     const { tick } = system;
 
     if (a !== 0) {
-      min(max(-m, v + a * tick), m);
+      return min(max(-m, v + a * tick), m);
     }
 
     if (f !== 0) {

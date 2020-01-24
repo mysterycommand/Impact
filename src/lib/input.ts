@@ -18,6 +18,7 @@ export default class Input {
 
   private onKeyDown = (event: KeyboardEvent) => {
     const action = this.bindings[event.code as KeyCode];
+
     if (action) {
       this.actions[action] = true;
 
@@ -32,6 +33,7 @@ export default class Input {
 
   private onKeyUp = (event: KeyboardEvent) => {
     const action = this.bindings[event.code as KeyCode];
+
     if (action) {
       this.keyUps[action] = true;
       event.preventDefault();
@@ -70,7 +72,7 @@ export default class Input {
   }
 
   public released(action: string) {
-    return this.keyUps[action];
+    return this.keyUps[action] ?? false;
   }
 
   public clearPressed() {
