@@ -7,7 +7,8 @@ import { query, on } from '../../lib/util';
 
 import '../../main.css';
 
-import { config } from './levels/title';
+import { config as titleConfig } from './levels/title';
+import { config as grasslandsConfig } from './levels/title';
 
 // media paths
 import fontPath from './media/fredoka-one.font.png';
@@ -36,7 +37,7 @@ class MyGame extends Game {
     super();
 
     this.font.letterSpacing = -2;
-    // this.loadLevel(Grasslands);
+    this.loadLevel(grasslandsConfig);
   }
 
   public update() {
@@ -70,7 +71,7 @@ class MyTitle extends Game {
     input.bind(KeyCode.KeyX, 'jump');
     input.bind(KeyCode.KeyC, 'shoot');
 
-    this.loadLevel(config);
+    this.loadLevel(titleConfig);
 
     this.maxY = this.sceneryMaps[0].pixelHeight - system.height;
   }
