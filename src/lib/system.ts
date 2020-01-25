@@ -33,6 +33,7 @@ export default class System {
     this.tick = this.clock.tick();
 
     this.frameId = rAF(this.run);
+
     this.game.run();
     input.clearPressed();
   };

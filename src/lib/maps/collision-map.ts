@@ -2,9 +2,9 @@ import {
   abs,
   ceil,
   floor,
+  hypot,
   max,
   min,
-  sqrt,
   isBetween,
   isOutside,
 } from '../math';
@@ -266,7 +266,7 @@ export default class CollisionMap extends BaseMap {
         return isSolid;
       }
 
-      const length = sqrt(lvx * lvx + lvy * lvy);
+      const length = hypot(lvx, lvy);
       const nx = lvy / length;
       const ny = -lvx / length;
 

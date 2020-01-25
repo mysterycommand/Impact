@@ -3,11 +3,13 @@ import { TraceResult } from './maps/collision-map';
 import {
   abs,
   atan2,
+  isBetween,
   min,
   max,
-  /* round, */
+  π,
+  // round,
+  // toDegrees,
   toRadians,
-  isBetween,
 } from './math';
 import SpriteSheet from './sprite-sheet';
 import SpriteSheetAnimation from './sprite-sheet-animation';
@@ -226,7 +228,7 @@ export default class Entity {
     }
 
     if (slope !== false) {
-      const { x, y, nx, ny } = slope;
+      const { x: sx, y: sy, nx, ny } = slope;
 
       if (this.bounciness > 0) {
         const proj = this.vel.x * nx + this.vel.y * ny;
@@ -234,13 +236,25 @@ export default class Entity {
         this.vel.x = (this.vel.x - nx * proj * 2) * this.bounciness;
         this.vel.y = (this.vel.y - ny * proj * 2) * this.bounciness;
       } else {
-        const lsq = x * x + y * y;
-        const dot = (this.vel.x * x + this.vel.y * y) / lsq;
+        const lsq = sx * sx + sy * sy;
+        const dot = (this.vel.x * sx + this.vel.y * sy) / lsq;
 
-        this.vel.x = x * dot;
-        this.vel.y = y * dot;
+        this.vel.x = sx * dot;
+        this.vel.y = sy * dot;
 
-        const angle = atan2(x, y);
+        // TODO: figure out why this is intentionally reversed in the source
+        const angle = atan2(sy, sx) + π / 2;
+        // if (
+        //   (this.spriteSheet?.bitmap
+        //     .imageSource as HTMLImageElement).src.includes('player')
+        // ) {
+        //   console.log(
+        //     toDegrees(atan2(sx, sy)),
+        //     'vs',
+        //     toDegrees(angle),
+        //     JSON.stringify(this.standingSlope, null, 2),
+        //   );
+        // }
         this.isStanding = isBetween(
           this.standingSlope.min,
           this.standingSlope.max,

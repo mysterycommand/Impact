@@ -8,7 +8,7 @@ import { query, on } from '../../lib/util';
 import '../../main.css';
 
 import { config as titleConfig } from './levels/title';
-import { config as grasslandsConfig } from './levels/title';
+import { config as grasslandsConfig } from './levels/grasslands';
 
 // media paths
 import fontPath from './media/fredoka-one.font.png';
@@ -25,6 +25,8 @@ const coinIconResource = new Bitmap(coinIconPath);
 const titleResource = new Bitmap(titlePath);
 
 class MyGame extends Game {
+  public readonly gravity: number = 800;
+
   protected clearColor = '#d0f4f7';
 
   public font = fontResource;
