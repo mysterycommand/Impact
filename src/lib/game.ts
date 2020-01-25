@@ -82,6 +82,10 @@ export default class Game {
 
     this.entities.push(entity);
     if (entity.name) {
+      if (this.namedEntites[entity.name]) {
+        throw new Error(`Cannot have two entities with name: "${entity.name}"`);
+      }
+
       this.namedEntites[entity.name] = entity;
     }
 

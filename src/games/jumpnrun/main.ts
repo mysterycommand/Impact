@@ -16,6 +16,7 @@ import heartFullPath from './media/heart-full.png';
 import heartEmptyPath from './media/heart-empty.png';
 import coinIconPath from './media/coin.png';
 import titlePath from './media/title.png';
+import Camera from '../../plugins/camera';
 
 // resources (to load)
 const fontResource = new Font(fontPath);
@@ -35,20 +36,33 @@ class MyGame extends Game {
   public heartEmpty = heartEmptyResource;
   public coinIcon = coinIconResource;
 
+  private camera = new Camera(system.width / 3, system.height / 3, 3);
+
   constructor() {
     super();
 
     this.font.letterSpacing = -2;
     this.loadLevel(grasslandsConfig);
+
+    this.setupCamera();
   }
 
   public update() {
     super.update();
-    // this.camera.follow(this.player);
+    this.camera.follow(this.namedEntites['player']);
   }
 
   public draw() {
     super.draw();
+  }
+
+  private setupCamera() {
+    this.camera.trap.size.x = system.width / 10;
+    this.camera.trap.size.y = system.height / 3;
+    this.camera.lookAhead.x = system.width / 6;
+    this.camera.max.x = this.collisionMap.pixelWidth - system.width;
+    this.camera.max.y = this.collisionMap.pixelHeight - system.height;
+    this.camera.set(this.namedEntites['player']);
   }
 }
 
