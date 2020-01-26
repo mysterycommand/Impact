@@ -4,7 +4,6 @@ import { TraceResult } from '../../../lib/maps/collision-map';
 import SpriteSheet from '../../../lib/sprite-sheet';
 
 import blobPath from '../media/blob.png';
-const blobResource = new SpriteSheet(blobPath, 64, 28);
 
 export default class Glerp extends Entity {
   public size = { x: 40, y: 28 };
@@ -15,7 +14,7 @@ export default class Glerp extends Entity {
   public checksAgainst = Type.Friend;
   public collides = Collides.Passive;
 
-  public spriteSheet = blobResource;
+  public spriteSheet = new SpriteSheet(blobPath, 64, 28);
 
   private speed = 36;
   private flip = false;

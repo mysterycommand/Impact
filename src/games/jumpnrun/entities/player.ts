@@ -3,7 +3,6 @@ import { input } from '../../../lib/impact';
 import SpriteSheet from '../../../lib/sprite-sheet';
 
 import playerPath from '../media/player.png';
-const playerResource = new SpriteSheet(playerPath, 75, 100);
 
 export default class Player extends Entity {
   // TODO: this is probably bad, 2 players would break this
@@ -14,7 +13,7 @@ export default class Player extends Entity {
   public friction = { x: 800, y: 0 };
   public maxVel = { x: 400, y: 800 };
 
-  public spriteSheet = playerResource;
+  public spriteSheet = new SpriteSheet(playerPath, 75, 100);
 
   private flip = false;
   private accelGround = 1_200;
