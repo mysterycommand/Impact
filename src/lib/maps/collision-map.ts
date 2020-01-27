@@ -26,17 +26,30 @@ export type TraceResult = {
 };
 
 export default class CollisionMap extends BaseMap {
-  // n.b. this *must* appear _before_ `none` below because the inherited
-  // `constructor` needs to access this value ... truly wild stuff JavaScript!
   static readonly defaultTileDef: TileDef = {
+    // one-way pass-through edges
+    12: [0, 0, 1, 0, false], // pass S → N
+    23: [1, 1, 0, 1, false], // pass N → S
+    34: [1, 0, 1, 1, false], // pass W → E
+    45: [0, 1, 0, 0, false], // pass E → W
+
+    // 45°-angle, solid tiles
+    2: [0, 1, 1, 0, true], //  45° NE ↗︎
+    24: [0, 0, 1, 1, true], // 45° SE ↘︎
+    13: [1, 1, 0, 0, true], // 45° NW ↖︎
+    35: [1, 0, 0, 1, true], // 45° SW ↙︎
+
     // TODO: support the full `defaultTileDef`
     // @see: ../../../orig/lib/impact/collision-map.js#L234
-    12: [0, 0, 1, 0, false],
   };
 
   // TODO: make this into an interface that `NoCollisionMap` implements without
   // all the unnecessary prototype chain stuff ...
   static readonly none = new (class NoCollisionMap extends CollisionMap {
+    constructor() {
+      super([[]], 8, {});
+    }
+
     public trace(x: number, y: number, vx: number, vy: number): TraceResult {
       return {
         collision: { x: false, y: false, slope: false },
