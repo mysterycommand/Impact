@@ -41,6 +41,9 @@ export default class CollisionMap extends BaseMap {
 
     // TODO: support the full `defaultTileDef`
     // @see: ../../../orig/lib/impact/collision-map.js#L234
+
+    // TODO: see if this list can be generated, some work here
+    // @see: https://codepen.io/mysterycommand/pen/YzPgbgE
   };
 
   // TODO: make this into an interface that `NoCollisionMap` implements without
