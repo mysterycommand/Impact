@@ -3,10 +3,13 @@ import Font, { Align } from '../../lib/font';
 import Game from '../../lib/game';
 import { input, main, system } from '../../lib/impact';
 import KeyCode from '../../lib/key-code';
+import SpriteSheet from '../../lib/sprite-sheet';
 import { query, on } from '../../lib/util';
+import Camera from '../../plugins/camera';
 
 import '../../main.css';
 
+import Player from './entities/player';
 import { config as titleConfig } from './levels/title';
 import { config as grasslandsConfig } from './levels/grasslands';
 
@@ -16,13 +19,12 @@ import heartFullPath from './media/heart-full.png';
 import heartEmptyPath from './media/heart-empty.png';
 import coinIconPath from './media/coin.png';
 import titlePath from './media/title.png';
-import Camera from '../../plugins/camera';
 
 // resources (to load)
 const fontResource = new Font(fontPath);
 const heartFullResource = new Bitmap(heartFullPath);
 const heartEmptyResource = new Bitmap(heartEmptyPath);
-const coinIconResource = new Bitmap(coinIconPath);
+const coinIconResource = new SpriteSheet(coinIconPath, 36, 36);
 const titleResource = new Bitmap(titlePath);
 
 class MyGame extends Game {
@@ -54,6 +56,30 @@ class MyGame extends Game {
 
   public draw() {
     super.draw();
+
+    const { player } = this.namedEntites;
+    if (player && player instanceof Player) {
+      let x = 16;
+      const y = 16;
+
+      for (let i = 0; i < player.maxHealth; ++i) {
+        (player.health > i ? this.heartFull : this.heartEmpty).draw(
+          0,
+          0,
+          this.heartEmpty.width,
+          this.heartEmpty.height,
+          x,
+          y,
+        );
+        x += this.heartEmpty.width + 8;
+      }
+
+      x += 48;
+      this.coinIcon.draw(0, x, y + 6);
+
+      x += 42;
+      this.font.print(`x ${player.coins}`, x, y + 10);
+    }
   }
 
   private setupCamera() {

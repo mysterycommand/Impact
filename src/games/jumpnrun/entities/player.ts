@@ -15,6 +15,10 @@ export default class Player extends Entity {
 
   public spriteSheet = new SpriteSheet(playerPath, 75, 100);
 
+  public health = 3;
+  public maxHealth = 3;
+  public coins = 0;
+
   private flip = false;
   private accelGround = 1_200;
   private accelAir = this.accelGround / 2;
