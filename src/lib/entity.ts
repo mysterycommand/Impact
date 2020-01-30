@@ -36,6 +36,10 @@ export const enum Axis {
   Y = 'y',
 }
 
+type EntitySettings = {
+  name: string;
+};
+
 export default class Entity {
   readonly id = nextId++;
   readonly name?: string;
@@ -105,9 +109,14 @@ export default class Entity {
     return this.prevPos.x - this.offset.x;
   }
 
-  constructor(x: number, y: number) {
+  constructor(x: number, y: number, settings?: EntitySettings) {
     this.currPos.x = this.prevPos.x = x;
     this.currPos.y = this.prevPos.y = y;
+
+    if (settings) {
+      const { name } = settings;
+      this.name = name;
+    }
   }
 
   public toString() {

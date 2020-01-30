@@ -130,6 +130,10 @@ export default class Game {
     // TODO: draw foreground maps
   }
 
+  public getNamedEntity(name: string) {
+    return this.namedEntites[name];
+  }
+
   protected updateEntities() {
     this.entities
       .filter(({ isActive }) => isActive)

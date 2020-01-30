@@ -80,6 +80,8 @@ class MyGame extends Game {
       x += 42;
       this.font.print(`x ${player.coins}`, x, y + 10);
     }
+
+    // TODO: touch buttons!?
   }
 
   private setupCamera() {

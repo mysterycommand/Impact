@@ -5,9 +5,6 @@ import SpriteSheet from '../../../lib/sprite-sheet';
 import playerPath from '../media/player.png';
 
 export default class Player extends Entity {
-  // TODO: this is probably bad, 2 players would break this
-  readonly name = 'player';
-
   public size = { x: 40, y: 88 };
   public offset = { x: 17, y: 10 };
   public friction = { x: 800, y: 0 };
