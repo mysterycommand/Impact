@@ -3,6 +3,10 @@ import Sound from './sound';
 import { once } from './util';
 import WebAudioSource from './web-audio-source';
 
+function isWebAudioSource(source: any): source is WebAudioSource {
+  return source instanceof WebAudioSource;
+}
+
 export default class SoundManager {
   public clips: { [path: string]: WebAudioSource | HTMLAudioElement[] } = {};
   public volume = 1;
@@ -43,8 +47,8 @@ export default class SoundManager {
   }
 
   private loadWebAudio(path: string, callback?: LoadCallback) {
-    if (this.clips[path]) {
-      return this.clips[path];
+    if (this.clips[path] && this.clips[path] instanceof WebAudioSource) {
+      return this.clips[path] as WebAudioSource;
     }
 
     const { audioContext } = this;
@@ -80,7 +84,23 @@ export default class SoundManager {
     callback?: LoadCallback,
   ) {
     if (this.clips[path]) {
-      return this.clips[path];
+      const clip = this.clips[path];
+
+      if (isWebAudioSource(clip)) {
+        return clip;
+      }
+
+      const channels = new Array().concat(clip);
+
+      if (multiChannel && channels.length < Sound.channels) {
+        for (let i = 0; i < Sound.channels; ++i) {
+          const channel = new Audio(path);
+          channel.load();
+          channels.push(channel);
+        }
+      }
+
+      return channels[0];
     }
 
     const clip = new Audio(path);
