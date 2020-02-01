@@ -75,4 +75,21 @@ export default class Sound implements Resource {
     this.currentClip.volume = soundManager.volume * this.volume;
     this.currentClip.play();
   }
+
+  public pause() {
+    if (!this.currentClip) {
+      return;
+    }
+
+    this.currentClip.pause();
+  }
+
+  public stop() {
+    if (!this.currentClip) {
+      return;
+    }
+
+    this.pause();
+    this.currentClip.currentTime = 0;
+  }
 }
