@@ -1,9 +1,13 @@
 import Entity from '../../../lib/entity';
 import { input } from '../../../lib/impact';
+import Sound from '../../../lib/sound';
 import SpriteSheet from '../../../lib/sprite-sheet';
 
-import playerPath from '../media/player.png';
-const spriteSheet = new SpriteSheet(playerPath, 75, 100);
+import spriteSheetPath from '../media/player.png';
+const spriteSheet = new SpriteSheet(spriteSheetPath, 75, 100);
+
+import jumpSoundPath from '../media/sounds/jump.ogg';
+const jumpSound = new Sound(jumpSoundPath);
 
 export default class Player extends Entity {
   public size = { x: 40, y: 88 };
@@ -12,6 +16,7 @@ export default class Player extends Entity {
   public maxVel = { x: 400, y: 800 };
 
   public spriteSheet = spriteSheet;
+  public jumpSound = jumpSound;
 
   public health = 3;
   public maxHealth = 3;
@@ -49,7 +54,7 @@ export default class Player extends Entity {
     // jump
     if (this.isStanding && input.pressed('jump')) {
       this.vel.y = -this.velJump;
-      // this.sfxJump.play();
+      this.jumpSound.play();
     }
 
     // shoot
