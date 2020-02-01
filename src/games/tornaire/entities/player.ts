@@ -6,7 +6,7 @@ import SpriteSheet from '../../../lib/sprite-sheet';
 import spriteSheetPath from '../media/player.png';
 const spriteSheet = new SpriteSheet(spriteSheetPath, 75, 100);
 
-import jumpSoundPath from '../media/sounds/jump.ogg';
+import jumpSoundPath from '../media/sounds/player/Jump.mp3';
 const jumpSound = new Sound(jumpSoundPath);
 
 export default class Player extends Entity {
