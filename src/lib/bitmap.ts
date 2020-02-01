@@ -1,9 +1,9 @@
-import { ready, resources, system, LoadCallback } from './impact';
+import { ready, resources, system, LoadCallback, Resource } from './impact';
 import { getImageData, offscreenCanvas } from './util';
 
 const { floor, round } = Math;
 
-export default class Bitmap {
+export default class Bitmap implements Resource {
   public static cache: Map<string, Bitmap> = new Map();
   public static drawCount = 0;
 
