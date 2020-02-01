@@ -75,12 +75,12 @@ export default class System {
     this.start();
   }
 
-  private start() {
+  public start() {
     this.isRunning && this.stop();
     this.frameId = rAF(this.run);
   }
 
-  private stop() {
+  public stop() {
     cAF(this.frameId);
     this.frameId = 0;
   }
