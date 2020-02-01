@@ -1,13 +1,20 @@
 import Entity from '../../../lib/entity';
+import Sound from '../../../lib/sound';
 import SpriteSheet from '../../../lib/sprite-sheet';
 
 import coinPath from '../media/coin.png';
+const spriteSheet = new SpriteSheet(coinPath, 36, 36);
+
+import collectPath from '../media/sounds/coin.mp3';
+const collectSound = new Sound(collectPath);
 
 import Player from './player';
 
 export default class Coin extends Entity {
   public size = { x: 36, y: 36 };
-  public spriteSheet = new SpriteSheet(coinPath, 36, 36);
+  public spriteSheet = spriteSheet;
+
+  private collectSound = collectSound;
 
   constructor(x: number, y: number) {
     super(x, y);
@@ -20,9 +27,9 @@ export default class Coin extends Entity {
 
   public check(other: Entity) {
     if (other instanceof Player) {
-      // other.giveCoins(1);
-      // this.sfxCollect.play();
-      // this.kill();
+      other.receiveCoins(1);
+      this.collectSound.play();
+      this.kill();
     }
   }
 }

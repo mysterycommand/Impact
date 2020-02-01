@@ -1,6 +1,6 @@
 import { LevelConfig } from '../types';
 
-import Entity, { checkPair } from './entity';
+import Entity, { checkPair, EntitySettings, Type, Collides } from './entity';
 import { system } from './impact';
 import CollisionMap from './maps/collision-map';
 import SceneryMap from './maps/scenery-map';
@@ -15,6 +15,7 @@ export default class Game {
   public screen = { x: 0, y: 0 };
 
   protected entities: Entity[] = [];
+  protected removedEntities: Entity[] = [];
 
   protected namedEntites: { [name: string]: Entity } = {};
   protected cellSize = 64;
@@ -34,8 +35,8 @@ export default class Game {
     this.entities = [];
     this.namedEntites = {};
 
-    entities.forEach(({ EntityClass, x, y }) => {
-      this.spawnEntity(EntityClass, x, y);
+    entities.forEach(({ EntityClass, x, y, settings }) => {
+      this.spawnEntity(EntityClass, x, y, settings);
     });
     this.sortEntities();
 
@@ -77,8 +78,13 @@ export default class Game {
     });
   }
 
-  protected spawnEntity(EntityClass: typeof Entity, x: number, y: number) {
-    const entity = new EntityClass(x, y);
+  protected spawnEntity(
+    EntityClass: typeof Entity,
+    x: number,
+    y: number,
+    settings?: EntitySettings,
+  ) {
+    const entity = new EntityClass(x, y, settings);
 
     this.entities.push(entity);
     if (entity.name) {
@@ -96,6 +102,18 @@ export default class Game {
     this.entities.sort((a, b) => a.zIndex - b.zIndex);
   }
 
+  public removeEntity(entity: Entity) {
+    if (entity.name) {
+      delete this.namedEntites[entity.name];
+    }
+
+    entity.isActive = false;
+    entity.type = Type.None;
+    entity.checksAgainst = Type.None;
+    entity.collides = Collides.Never;
+    this.removedEntities.push(entity);
+  }
+
   public run() {
     this.update();
     this.draw();
@@ -107,7 +125,12 @@ export default class Game {
     this.updateEntities();
     this.checkEntities();
 
-    // TODO: remove killed entities
+    this.removedEntities.forEach(entity => {
+      const index = this.entities.indexOf(entity);
+      this.entities.splice(index, 1);
+    });
+    this.removedEntities = [];
+
     // TODO: re-sort entities
     // TODO: update background animations
   }

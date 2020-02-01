@@ -10,12 +10,6 @@ function isTriggerable(entity: any): entity is Triggerable {
   return 'triggeredBy' in entity && typeof entity.triggeredBy === 'function';
 }
 
-type TriggerSettings = {
-  size: { x: number; y: number };
-  targets: string[];
-  wait: number;
-};
-
 export default class Trigger extends Entity {
   public size = { x: 32, y: 32 };
   public targets: string[] = [];
@@ -23,15 +17,6 @@ export default class Trigger extends Entity {
   private wait = -1;
   private waitTimer = new Timer();
   private canFire = true;
-
-  constructor(x: number, y: number, { size, targets, wait }: TriggerSettings) {
-    super(x, y);
-
-    this.size.x = size.x;
-    this.size.y = size.y;
-    this.targets = targets;
-    this.wait = wait;
-  }
 
   public update() {}
 

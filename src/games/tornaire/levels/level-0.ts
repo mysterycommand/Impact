@@ -1,12 +1,18 @@
 import Bitmap from '../../../lib/bitmap';
 import { LevelConfig } from '../../../types';
 
+import Coin from '../entities/coin';
 import Player from '../entities/player';
 import tilePath from '../media/tiles-70.png';
 new Bitmap(tilePath);
 
 export default <LevelConfig>{
-  entities: [{ EntityClass: Player, x: 785, y: -70 }],
+  entities: [
+    ...new Array(22)
+      .fill(null)
+      .map((_, i) => ({ EntityClass: Coin, x: 87 + i * 70, y: 857 })),
+    { EntityClass: Player, x: 785, y: -70 },
+  ],
   layers: [
     {
       name: 'background',

@@ -36,9 +36,14 @@ export const enum Axis {
   Y = 'y',
 }
 
-type EntitySettings = {
-  name: string;
-};
+export type EntitySettings = Partial<
+  Entity & {
+    targets: string[];
+    damage: number;
+    wait: number;
+    level: string;
+  }
+>;
 
 export default class Entity {
   readonly id = nextId++;
@@ -113,6 +118,8 @@ export default class Entity {
     this.currPos.x = this.prevPos.x = x;
     this.currPos.y = this.prevPos.y = y;
 
+    Object.assign(this, settings);
+
     if (settings) {
       const { name } = settings;
       this.name = name;
@@ -182,6 +189,10 @@ export default class Entity {
     //   this.size.x * system.scale,
     //   this.size.y * system.scale,
     // );
+  }
+
+  public kill() {
+    system.game?.removeEntity(this);
   }
 
   public check(other: Entity) {}
@@ -448,6 +459,8 @@ function solveCollision(entity: Entity, other: Entity) {
 }
 
 export function checkPair(entity: Entity, other: Entity) {
+  console.log(entity.toString(), other.toString());
+
   if (entity.checksAgainst & other.type) {
     entity.check(other);
   }

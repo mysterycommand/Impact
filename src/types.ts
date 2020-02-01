@@ -1,9 +1,10 @@
-import Entity from './lib/entity';
+import Entity, { EntitySettings } from './lib/entity';
 
 export type EntityConfig = {
   EntityClass: typeof Entity;
   x: number;
   y: number;
+  settings?: EntitySettings;
 };
 
 export type LayerConfig = {

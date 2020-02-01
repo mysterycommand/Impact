@@ -1,4 +1,4 @@
-import Entity from '../../../lib/entity';
+import Entity, { EntitySettings, Type, Collides } from '../../../lib/entity';
 import { input } from '../../../lib/impact';
 import Sound from '../../../lib/sound';
 import SpriteSheet from '../../../lib/sprite-sheet';
@@ -10,6 +10,10 @@ import jumpSoundPath from '../media/sounds/player/Jump.mp3';
 const jumpSound = new Sound(jumpSoundPath);
 
 export default class Player extends Entity {
+  public type = Type.Friend;
+  public checksAgainst = Type.None;
+  public collides = Collides.Passive;
+
   public size = { x: 40, y: 88 };
   public offset = { x: 17, y: 10 };
   public friction = { x: 800, y: 0 };
@@ -27,8 +31,8 @@ export default class Player extends Entity {
   private accelAir = this.accelGround / 2;
   private velJump = 500;
 
-  constructor(x: number, y: number) {
-    super(x, y);
+  constructor(x: number, y: number, settings?: EntitySettings) {
+    super(x, y, settings);
 
     this.addAnim('idle', 1, [15, 15, 15, 15, 15, 14]);
     this.addAnim('run', 0.07, [4, 5, 11, 0, 1, 2, 7, 8, 9, 3]);
@@ -85,5 +89,9 @@ export default class Player extends Entity {
 
     // move
     super.update();
+  }
+
+  public receiveCoins(coins: number) {
+    this.coins += coins;
   }
 }

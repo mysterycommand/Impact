@@ -13,7 +13,7 @@ export const config: LevelConfig = {
     { EntityClass: Glerp, x: 700, y: 732 },
     { EntityClass: Glerp, x: 80, y: 668 },
     { EntityClass: Glerp, x: 332, y: 812 },
-    { EntityClass: Player, x: 541, y: 542 },
+    { EntityClass: Player, x: 541, y: 542, settings: { name: 'player' } },
   ],
   layers: [
     {

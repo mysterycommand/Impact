@@ -1,4 +1,4 @@
-import Entity from '../../../lib/entity';
+import Entity, { EntitySettings } from '../../../lib/entity';
 import { input } from '../../../lib/impact';
 import SpriteSheet from '../../../lib/sprite-sheet';
 
@@ -21,8 +21,8 @@ export default class Player extends Entity {
   private accelAir = this.accelGround / 2;
   private velJump = 500;
 
-  constructor(x: number, y: number) {
-    super(x, y);
+  constructor(x: number, y: number, settings?: EntitySettings) {
+    super(x, y, settings);
 
     this.addAnim('idle', 1, [15, 15, 15, 15, 15, 14]);
     this.addAnim('run', 0.07, [4, 5, 11, 0, 1, 2, 7, 8, 9, 3]);
@@ -79,5 +79,9 @@ export default class Player extends Entity {
 
     // move
     super.update();
+  }
+
+  public receiveCoins(coins: number) {
+    this.coins += coins;
   }
 }
