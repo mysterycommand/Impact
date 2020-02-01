@@ -3,7 +3,7 @@ import { query, on } from '../../lib/util';
 
 import '../../main.css';
 
-import Tornaire from './tornaire';
+import Tornaire from '.';
 
 const { innerWidth: w, innerHeight: h } = window;
 const canvasId = '#canvas';
