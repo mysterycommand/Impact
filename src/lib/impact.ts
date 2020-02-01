@@ -2,6 +2,7 @@ import Game from './game';
 import Input from './input';
 import Loader from './loader';
 import System from './system';
+import SoundManager from './sound-manager';
 import Sound from './sound';
 import Music from './music';
 
@@ -17,7 +18,7 @@ export let system: System;
 export let input: Input;
 export let ready = false;
 
-export let sound: Sound;
+export let soundManager: SoundManager;
 export let music: Music;
 
 export function main(
@@ -31,7 +32,8 @@ export function main(
 ) {
   system = new System(canvasId, fps, width, height, scale);
   input = new Input();
-  sound = new Sound();
+
+  soundManager = new SoundManager();
   music = new Music();
 
   ready = true;
