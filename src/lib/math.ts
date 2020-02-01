@@ -8,6 +8,7 @@ export const {
   max,
   min,
   PI: π,
+  random,
   round,
   sin,
   sqrt,
