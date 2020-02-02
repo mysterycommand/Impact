@@ -7,6 +7,7 @@
     "reset": "yarn clean node_modules/ && yarn install",
     "start": "parcel src/index.html & serve exclude/jumpnrun && fg",
     "build": "parcel build src/index.html --public-url /Impact",
+    "build:tornaire": "parcel build src/games/tornaire/index.html --public-url / --no-source-maps",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
