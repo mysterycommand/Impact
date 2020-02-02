@@ -36,12 +36,12 @@ export default class Tornaire extends Game {
         return;
       }
 
+      input.bind(KeyCode.KeyA, 'left');
+      input.bind(KeyCode.KeyD, 'right');
+      input.bind(KeyCode.KeyW, 'jump');
+
       this.music.play();
     });
-
-    input.bind(KeyCode.ArrowLeft, 'left');
-    input.bind(KeyCode.ArrowRight, 'right');
-    input.bind(KeyCode.ArrowUp, 'jump');
 
     this.loadLevel(config);
   }
@@ -53,19 +53,24 @@ export default class Tornaire extends Game {
   public draw() {
     super.draw();
 
+    if (this.music.isPlaying) {
+      // proxy for if the user clicked
+      return;
+    }
+
     const hw = system.width / 2;
     const hh = system.height / 2 - this.titleFont.height / 2;
     this.titleFont.print('tornaire', hw, hh, Align.Center);
     this.bodyFont.print(
-      'WASD TO MOVE, L TO JUMP',
+      'AD TO MOVE, W TO JUMP',
       hw,
-      hh + this.titleFont.height / 2 + this.bodyFont.height * 3,
+      hh + this.titleFont.height / 2 + this.bodyFont.height * 2.5,
       Align.Center,
     );
     this.bodyFont.print(
       'CLICK ANYWHERE TO START',
       hw,
-      hh + this.titleFont.height / 2 + this.bodyFont.height * 4,
+      hh + this.titleFont.height / 2 + this.bodyFont.height * 3.5,
       Align.Center,
     );
   }
