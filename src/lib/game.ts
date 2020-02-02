@@ -174,7 +174,15 @@ export default class Game {
 
     const table: { [col: number]: { [row: number]: Entity[] } } = {};
     this.entities
-      .filter(({ isActive }) => isActive)
+      .filter(
+        ({ isActive, type, checksAgainst, collides }) =>
+          isActive &&
+          !(
+            type === Type.None &&
+            checksAgainst === Type.None &&
+            collides === Collides.Never
+          ),
+      )
       .forEach(entity => {
         const { currPos, size } = entity;
         const checked: { [id: number]: boolean } = {};
@@ -221,6 +229,28 @@ export default class Game {
       }
 
       entity.draw();
+      /**
+       * DEBUG DRAW!
+       */
+      if (
+        system.isDebug &&
+        entity.isActive &&
+        !(
+          entity.type === Type.None &&
+          entity.checksAgainst === Type.None &&
+          entity.collides === Collides.Never
+        )
+      ) {
+        system.context.fillStyle = 'rgba(255, 0, 255, 0.15)';
+        system.context.fillRect(
+          floor(entity.currPos.x / this.cellSize) * this.cellSize,
+          floor(entity.currPos.y / this.cellSize) * this.cellSize,
+          floor((entity.currPos.x + entity.size.x) / this.cellSize) +
+            this.cellSize,
+          floor((entity.currPos.y + entity.size.y) / this.cellSize) +
+            this.cellSize,
+        );
+      }
     });
   }
 }

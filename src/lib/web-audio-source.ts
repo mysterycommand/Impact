@@ -29,6 +29,14 @@ export default class WebAudioSource {
     this.gain.gain.value = value;
   }
 
+  public get currentTime() {
+    return 0;
+  }
+
+  public set currentTime(value: number) {
+    console.log(value);
+  }
+
   constructor() {
     this.gain = soundManager.audioContext.createGain();
     this.gain.connect(soundManager.audioContext.destination);

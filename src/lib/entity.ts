@@ -56,7 +56,7 @@ export default class Entity {
 
   public zIndex = 0;
   public isActive = true;
-  public health = 10;
+  public health = 1000;
 
   public size = { x: 16, y: 16 };
   public offset = { x: 0, y: 0 };
@@ -176,23 +176,25 @@ export default class Entity {
     /**
      * DEBUG DRAW!
      */
-    // system.context.strokeStyle = 'red';
-    // system.context.lineWidth = 1.0;
-    // system.context.strokeRect(
-    //   (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
-    //     0.5,
-    //   (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
-    //     0.5,
-    //   this.size.x * system.scale,
-    //   this.size.y * system.scale,
-    // );
+    if (system.isDebug) {
+      system.context.strokeStyle = 'red';
+      system.context.lineWidth = 1.0;
+      system.context.strokeRect(
+        (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
+          0.5,
+        (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
+          0.5,
+        this.size.x * system.scale,
+        this.size.y * system.scale,
+      );
+    }
   }
 
   public removeSelf() {
     system.game?.removeEntity(this);
   }
 
-  public receiveDamage(amount: number) {
+  public receiveDamage(amount: number, other: Entity) {
     this.health -= amount;
     if (this.health <= 0) {
       this.removeSelf();
@@ -203,11 +205,12 @@ export default class Entity {
   public collideWith(other: Entity, axis: Axis) {}
 
   public isTouching(other: Entity) {
+    // top, left, bottom, right
     return !(
-      this.currTop >= other.currBottom ||
-      this.currRight <= other.currLeft ||
-      this.currBottom <= other.currTop ||
-      this.currLeft >= other.currRight
+      this.currPos.y >= other.currPos.y + other.size.y ||
+      this.currPos.x + this.size.x <= other.currPos.x ||
+      this.currPos.y + this.size.y <= other.currPos.y ||
+      this.currPos.x >= other.currPos.x + other.size.x
     );
   }
 
@@ -464,12 +467,10 @@ function solveCollision(entity: Entity, other: Entity) {
 
 export function checkPair(entity: Entity, other: Entity) {
   if (entity.checksAgainst & other.type) {
-    console.log(entity.toString(), other.toString());
     entity.check(other);
   }
 
   if (other.checksAgainst & entity.type) {
-    console.log(entity.toString(), other.toString());
     other.check(entity);
   }
 

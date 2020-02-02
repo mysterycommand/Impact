@@ -22,7 +22,7 @@ const config: LevelConfig = {
           return acc.concat({ EntityClass: Coin, x: 87 + i * 70, y: 857 });
       }
     }, []),
-    { EntityClass: Hurt, x: 0, y: 0, settings: { name: 'hurt' } },
+    { EntityClass: Hurt, x: 615, y: 265, settings: { name: 'hurt' } },
     {
       EntityClass: Trigger,
       x: 490,
@@ -31,8 +31,8 @@ const config: LevelConfig = {
     },
     {
       EntityClass: LevelChange,
-      x: 0,
-      y: 0,
+      x: 1505,
+      y: 855,
       settings: { name: 'exit' },
     },
     {

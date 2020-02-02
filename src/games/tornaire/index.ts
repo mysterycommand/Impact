@@ -7,15 +7,16 @@ import Music from '../../lib/music';
 import fontPath from './media/fredoka-one.font.png';
 const font = new Font(fontPath);
 
-import musicPath from './media/music/Ambient Bongos.mp3';
+import musicPath from './media/music/Tornaire OST - Overworld BGM LOOP - Diwa de Leon.mp3';
 
 import config from './levels/level-0';
-import { on } from '../../lib/util';
+import { once } from '../../lib/util';
 
 export default class Tornaire extends Game {
   public readonly gravity = 800;
   public font = font;
   protected clearColor = '#e7e7e7';
+  protected cellSize = 70;
 
   private music = new Music();
 
@@ -25,7 +26,11 @@ export default class Tornaire extends Game {
     this.music.add(musicPath);
     this.music.loop = true;
 
-    on(document, 'click', () => {
+    once(document, 'click', () => {
+      if (this.music.isPlaying) {
+        return;
+      }
+
       this.music.play();
     });
 

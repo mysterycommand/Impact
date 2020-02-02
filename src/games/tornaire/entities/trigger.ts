@@ -1,7 +1,7 @@
 import Entity, { Type, Collides, EntitySettings } from '../../../lib/entity';
 import Timer from '../../../lib/timer';
 import { system } from '../../../lib/impact';
-// import { round } from '../../../lib/math';
+import { round } from '../../../lib/math';
 
 interface Triggerable extends Entity {
   triggeredBy(other: Entity, trigger: Trigger): void;
@@ -34,16 +34,18 @@ export default class Trigger extends Entity {
     /**
      * DEBUG DRAW!
      */
-    // system.context.strokeStyle = 'green';
-    // system.context.lineWidth = 1.0;
-    // system.context.strokeRect(
-    //   (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
-    //     0.5,
-    //   (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
-    //     0.5,
-    //   this.size.x * system.scale,
-    //   this.size.y * system.scale,
-    // );
+    if (system.isDebug) {
+      system.context.strokeStyle = 'green';
+      system.context.lineWidth = 1.0;
+      system.context.strokeRect(
+        (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
+          0.5,
+        (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
+          0.5,
+        this.size.x * system.scale,
+        this.size.y * system.scale,
+      );
+    }
   }
 
   public check(other: Entity) {
@@ -56,10 +58,8 @@ export default class Trigger extends Entity {
       throw new Error('Tried to trigger without a game');
     }
 
-    console.log(this.canFire, this.waitTimer.delta(), this.targets);
     this.targets.forEach(target => {
       const entity = game.getNamedEntity(target);
-      console.log(entity.name, isTriggerable(entity));
 
       if (isTriggerable(entity)) {
         entity.triggeredBy(other, this);

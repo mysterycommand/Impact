@@ -5,6 +5,7 @@ import {
   resources,
   Resource,
 } from './impact';
+import WebAudioSource from './web-audio-source';
 
 enum Format {
   Mp3 = 'Mp3',
@@ -33,7 +34,7 @@ export default class Sound implements Resource {
 
   public volume = 1;
 
-  private currentClip?: any;
+  private currentClip?: HTMLAudioElement | WebAudioSource;
   private shouldLoop = false;
 
   public get loop() {

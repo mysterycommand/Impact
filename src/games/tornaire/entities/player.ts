@@ -1,13 +1,25 @@
 import Entity, { EntitySettings, Type, Collides } from '../../../lib/entity';
-import { input } from '../../../lib/impact';
+import { input, system } from '../../../lib/impact';
+import { min, max, floor, random } from '../../../lib/math';
 import Sound from '../../../lib/sound';
 import SpriteSheet from '../../../lib/sprite-sheet';
+
+import config from '../levels/level-0';
 
 import spriteSheetPath from '../media/player.png';
 const spriteSheet = new SpriteSheet(spriteSheetPath, 75, 100);
 
 import jumpSoundPath from '../media/sounds/player/Jump.mp3';
 const jumpSound = new Sound(jumpSoundPath);
+
+import hurtSound1Path from '../media/sounds/player/TakeDamage1.mp3';
+const hurtSound1 = new Sound(hurtSound1Path);
+
+import hurtSound2Path from '../media/sounds/player/TakeDamage2.mp3';
+const hurtSound2 = new Sound(hurtSound2Path);
+
+import hurtSound3Path from '../media/sounds/player/TakeDamage3.mp3';
+const hurtSound3 = new Sound(hurtSound3Path);
 
 export default class Player extends Entity {
   public type = Type.Friend;
@@ -21,6 +33,10 @@ export default class Player extends Entity {
 
   public spriteSheet = spriteSheet;
   public jumpSound = jumpSound;
+  public hurtSounds = [hurtSound1, hurtSound2, hurtSound3];
+  public get hurtSound() {
+    return this.hurtSounds[floor(random() * this.hurtSounds.length)];
+  }
 
   public health = 3;
   public maxHealth = 3;
@@ -71,12 +87,18 @@ export default class Player extends Entity {
       // );
     }
 
-    // TODO: pain & death
-    if (this.vel.y < 0) {
+    if (this.currAnim === this.anims.pain && this.currAnim.loopCount < 1) {
+      if (this.health <= 0) {
+        const fade = (1 / this.currAnim.spf) * system.tick;
+        this.currAnim.alpha = min(max(0, this.currAnim.alpha - fade), 1);
+      }
+    } else if (this.health <= 0) {
+      this.removeSelf();
+    } else if (this.vel.y < 0) {
       this.currAnim = this.anims.jump;
     } else if (this.vel.y > 0) {
       if (this.currAnim !== this.anims.fall) {
-        this.currAnim = this.anims.fall;
+        this.currAnim = this.anims.fall.rewind();
       }
     } else if ((this.vel.x += 0)) {
       this.currAnim = this.anims.run;
@@ -85,7 +107,9 @@ export default class Player extends Entity {
     }
 
     // flip
-    this.currAnim.flip.x = this.flip;
+    if (this.currAnim) {
+      this.currAnim.flip.x = this.flip;
+    }
 
     // move
     super.update();
@@ -93,5 +117,29 @@ export default class Player extends Entity {
 
   public receiveCoins(coins: number) {
     this.coins += coins;
+  }
+
+  public removeSelf() {
+    super.removeSelf();
+
+    if (!system.game) {
+      return;
+    }
+
+    system.game.levelToLoad = config;
+  }
+
+  public receiveDamage(amount: number, other: Entity) {
+    if (this.currAnim === this.anims.pain) {
+      return;
+    }
+
+    this.health -= amount;
+    this.currAnim = this.anims.pain.rewind();
+
+    this.vel.x = other.currPos.x > this.currPos.x ? -400 : 400;
+    this.vel.y = -300;
+
+    this.hurtSound.play();
   }
 }

@@ -6,6 +6,6 @@ export default class Hurt extends Entity {
   public update() {}
 
   public triggeredBy(entity: Entity) {
-    entity.receiveDamage(this.damage);
+    entity.receiveDamage(this.damage, this);
   }
 }

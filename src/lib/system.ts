@@ -4,6 +4,8 @@ import { query, cAF, rAF } from './util';
 import { input } from './impact';
 
 export default class System {
+  public readonly isDebug = false;
+
   public get context() {
     return this.canvasContext;
   }

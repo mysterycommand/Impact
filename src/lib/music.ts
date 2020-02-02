@@ -22,6 +22,7 @@ export default class Music {
   public currentTrack?: Sound;
   public currentIndex = 0;
   public isRandom = false;
+  public isPlaying = false;
 
   private trackVolume = 1;
   private shouldLoop = false;
@@ -127,6 +128,7 @@ export default class Music {
       return;
     }
 
+    this.isPlaying = false;
     this.currentTrack.pause();
   }
 
@@ -135,6 +137,7 @@ export default class Music {
       return;
     }
 
+    this.isPlaying = false;
     this.currentTrack.stop();
   }
 
@@ -149,6 +152,7 @@ export default class Music {
       return;
     }
 
+    this.isPlaying = true;
     this.currentTrack.play();
   }
 

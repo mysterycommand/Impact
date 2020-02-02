@@ -16,7 +16,7 @@ export default class SpriteSheetAnimation {
 
   private frame = 0;
   private sprite = this.frames[this.frame];
-  private loopCount = 0;
+  public loopCount = 0;
 
   public alpha = 1;
   public angle = 0;
@@ -66,5 +66,13 @@ export default class SpriteSheetAnimation {
     if (this.alpha !== 1) {
       context.globalAlpha = 1;
     }
+  }
+
+  public rewind() {
+    this.timer.set();
+    this.loopCount = 0;
+    this.frame = 0;
+    this.sprite = this.frames[0];
+    return this;
   }
 }
