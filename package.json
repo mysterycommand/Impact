@@ -7,7 +7,8 @@
     "reset": "yarn clean node_modules/ && yarn install",
     "start": "parcel src/index.html & serve exclude/jumpnrun && fg",
     "build": "parcel build src/index.html --public-url /Impact",
-    "build:tornaire": "parcel build src/games/tornaire/index.html --public-url / --no-source-maps",
+    "build:tornaire": "parcel build src/games/tornaire/index.html --public-url /Impact --no-source-maps",
+    "deploy": "gh-pages -d dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -41,6 +42,7 @@
     "@babel/preset-env": "7.8.3",
     "@babel/preset-typescript": "7.8.3",
     "core-js": "3.6.4",
+    "gh-pages": "2.2.0",
     "parcel-bundler": "1.12.4",
     "prettier": "1.19.1",
     "serve": "11.3.0",
