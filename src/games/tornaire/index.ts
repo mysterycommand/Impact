@@ -43,11 +43,17 @@ export default class Tornaire extends Game {
       this.music.play();
     });
 
+    input.bind(KeyCode.KeyP, 'debug');
+
     this.loadLevel(config);
   }
 
   public update() {
     super.update();
+
+    if (input.pressed('debug')) {
+      system.isDebug = !system.isDebug;
+    }
   }
 
   public draw() {
@@ -62,7 +68,7 @@ export default class Tornaire extends Game {
     const hh = system.height / 2 - this.titleFont.height / 2;
     this.titleFont.print('tornaire', hw, hh, Align.Center);
     this.bodyFont.print(
-      'AD TO MOVE, W TO JUMP',
+      'A & D TO MOVE, W TO JUMP',
       hw,
       hh + this.titleFont.height / 2 + this.bodyFont.height * 2.5,
       Align.Center,
