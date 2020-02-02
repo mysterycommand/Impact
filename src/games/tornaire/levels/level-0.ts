@@ -1,7 +1,9 @@
 import Bitmap from '../../../lib/bitmap';
+import { random } from '../../../lib/math';
 import { LevelConfig } from '../../../types';
 
-import Coin from '../entities/coin';
+import BadPlant from '../entities/bad-plant';
+import GoodPlant from '../entities/good-plant';
 import Hurt from '../entities/hurt';
 import LevelChange from '../entities/levelchange';
 import Player from '../entities/player';
@@ -19,9 +21,16 @@ const config: LevelConfig = {
         case 20:
           return acc;
         default:
-          return acc.concat({ EntityClass: Coin, x: 87 + i * 70, y: 857 });
+          return random() < 0.3
+            ? acc.concat({ EntityClass: GoodPlant, x: 70 + i * 70, y: 840 })
+            : acc;
       }
     }, []),
+    ...new Array(3).fill(null).map((_, i) => ({
+      EntityClass: BadPlant,
+      x: 490 + i * 70,
+      y: 140,
+    })),
     { EntityClass: Hurt, x: 595, y: 195, settings: { name: 'hurt' } },
     {
       EntityClass: Trigger,
