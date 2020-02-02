@@ -29,7 +29,7 @@ export default class Coin extends Entity {
     if (other instanceof Player) {
       other.receiveCoins(1);
       this.collectSound.play();
-      this.kill();
+      this.removeSelf();
     }
   }
 }

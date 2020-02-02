@@ -1,6 +1,7 @@
-import Entity from '../../../lib/entity';
+import Entity, { Type, Collides, EntitySettings } from '../../../lib/entity';
 import Timer from '../../../lib/timer';
 import { system } from '../../../lib/impact';
+// import { round } from '../../../lib/math';
 
 interface Triggerable extends Entity {
   triggeredBy(other: Entity, trigger: Trigger): void;
@@ -11,14 +12,39 @@ function isTriggerable(entity: any): entity is Triggerable {
 }
 
 export default class Trigger extends Entity {
-  public size = { x: 32, y: 32 };
-  public targets: string[] = [];
+  public type = Type.None;
+  public checksAgainst = Type.Friend;
+  public collides = Collides.Never;
 
-  private wait = -1;
-  private waitTimer = new Timer();
-  private canFire = true;
+  public targets: string[] = [];
+  public wait = -1;
+  public waitTimer = new Timer();
+  public canFire = true;
+
+  constructor(x: number, y: number, settings?: EntitySettings) {
+    super(x, y, settings);
+    Object.assign(this, settings);
+  }
 
   public update() {}
+
+  public draw() {
+    super.draw();
+
+    /**
+     * DEBUG DRAW!
+     */
+    // system.context.strokeStyle = 'green';
+    // system.context.lineWidth = 1.0;
+    // system.context.strokeRect(
+    //   (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
+    //     0.5,
+    //   (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
+    //     0.5,
+    //   this.size.x * system.scale,
+    //   this.size.y * system.scale,
+    // );
+  }
 
   public check(other: Entity) {
     if (!(this.canFire && this.waitTimer.delta() >= 0)) {
@@ -30,8 +56,10 @@ export default class Trigger extends Entity {
       throw new Error('Tried to trigger without a game');
     }
 
+    console.log(this.canFire, this.waitTimer.delta(), this.targets);
     this.targets.forEach(target => {
       const entity = game.getNamedEntity(target);
+      console.log(entity.name, isTriggerable(entity));
 
       if (isTriggerable(entity)) {
         entity.triggeredBy(other, this);

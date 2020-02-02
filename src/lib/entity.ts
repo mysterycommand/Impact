@@ -10,6 +10,7 @@ import {
   // round,
   // toDegrees,
   toRadians,
+  round,
 } from './math';
 import SpriteSheet from './sprite-sheet';
 import SpriteSheetAnimation from './sprite-sheet-animation';
@@ -37,7 +38,7 @@ export const enum Axis {
 }
 
 export type EntitySettings = Partial<
-  Entity & {
+  Omit<Entity, 'currPos' | 'prevPos'> & {
     targets: string[];
     damage: number;
     wait: number;
@@ -55,6 +56,7 @@ export default class Entity {
 
   public zIndex = 0;
   public isActive = true;
+  public health = 10;
 
   public size = { x: 16, y: 16 };
   public offset = { x: 0, y: 0 };
@@ -119,11 +121,6 @@ export default class Entity {
     this.currPos.y = this.prevPos.y = y;
 
     Object.assign(this, settings);
-
-    if (settings) {
-      const { name } = settings;
-      this.name = name;
-    }
   }
 
   public toString() {
@@ -182,17 +179,24 @@ export default class Entity {
     // system.context.strokeStyle = 'red';
     // system.context.lineWidth = 1.0;
     // system.context.strokeRect(
-    //   (/* round( */this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
+    //   (round(this.currPos.x) - (system.game?.screen.x || 0)) * system.scale -
     //     0.5,
-    //   (/* round( */this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
+    //   (round(this.currPos.y) - (system.game?.screen.y || 0)) * system.scale -
     //     0.5,
     //   this.size.x * system.scale,
     //   this.size.y * system.scale,
     // );
   }
 
-  public kill() {
+  public removeSelf() {
     system.game?.removeEntity(this);
+  }
+
+  public receiveDamage(amount: number) {
+    this.health -= amount;
+    if (this.health <= 0) {
+      this.removeSelf();
+    }
   }
 
   public check(other: Entity) {}
@@ -459,13 +463,13 @@ function solveCollision(entity: Entity, other: Entity) {
 }
 
 export function checkPair(entity: Entity, other: Entity) {
-  console.log(entity.toString(), other.toString());
-
   if (entity.checksAgainst & other.type) {
+    console.log(entity.toString(), other.toString());
     entity.check(other);
   }
 
   if (other.checksAgainst & entity.type) {
+    console.log(entity.toString(), other.toString());
     other.check(entity);
   }
 

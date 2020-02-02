@@ -13,6 +13,7 @@ export default class Game {
 
   protected clearColor = '#000';
   public screen = { x: 0, y: 0 };
+  public levelToLoad?: LevelConfig;
 
   protected entities: Entity[] = [];
   protected removedEntities: Entity[] = [];
@@ -120,7 +121,10 @@ export default class Game {
   }
 
   public update() {
-    // TODO: load new level
+    if (this.levelToLoad) {
+      this.loadLevel(this.levelToLoad);
+      this.levelToLoad = undefined;
+    }
 
     this.updateEntities();
     this.checkEntities();

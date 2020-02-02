@@ -2,11 +2,15 @@ import Bitmap from '../../../lib/bitmap';
 import { LevelConfig } from '../../../types';
 
 import Coin from '../entities/coin';
+import Hurt from '../entities/hurt';
+import LevelChange from '../entities/levelchange';
 import Player from '../entities/player';
+import Trigger from '../entities/trigger';
+
 import tilePath from '../media/tiles-70.png';
 new Bitmap(tilePath);
 
-export default <LevelConfig>{
+const config: LevelConfig = {
   entities: [
     ...new Array(22).fill(null).reduce((acc, _, i) => {
       switch (i) {
@@ -18,6 +22,25 @@ export default <LevelConfig>{
           return acc.concat({ EntityClass: Coin, x: 87 + i * 70, y: 857 });
       }
     }, []),
+    { EntityClass: Hurt, x: 0, y: 0, settings: { name: 'hurt' } },
+    {
+      EntityClass: Trigger,
+      x: 490,
+      y: 250,
+      settings: { targets: ['hurt'], size: { x: 210, y: 30 }, wait: 0 },
+    },
+    {
+      EntityClass: LevelChange,
+      x: 0,
+      y: 0,
+      settings: { name: 'exit' },
+    },
+    {
+      EntityClass: Trigger,
+      x: 1470,
+      y: 800,
+      settings: { targets: ['exit'], size: { x: 70, y: 110 }, wait: 0 },
+    },
     { EntityClass: Player, x: 785, y: -70 },
   ],
   layers: [
@@ -108,3 +131,5 @@ export default <LevelConfig>{
     },
   ],
 };
+
+export default config;

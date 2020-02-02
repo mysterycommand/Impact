@@ -23,4 +23,10 @@ on(window, 'resize', ({ target }) => {
 });
 window.dispatchEvent(new Event('resize'));
 
+on(canvas, 'mousedown', event => {
+  event.preventDefault();
+  event.stopPropagation();
+  console.log(event.clientX, event.clientY);
+});
+
 main(canvasId, Tornaire, 60, w, h, 1);
