@@ -3,7 +3,6 @@ import Input from './input';
 import Loader from './loader';
 import System from './system';
 import SoundManager from './sound-manager';
-import Sound from './sound';
 import Music from './music';
 
 export type LoadCallback = (path: string, success: boolean) => void;
